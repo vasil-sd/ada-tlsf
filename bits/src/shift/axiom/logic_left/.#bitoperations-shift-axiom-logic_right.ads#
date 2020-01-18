@@ -1,0 +1,7 @@
+generic
+package BitOperations.Shift.Axiom.Logic_Right with
+SPARK_Mode, Pure, Ghost is
+   
+   
+
+end BitOperations.Shift.Axiom.Logic_Right;

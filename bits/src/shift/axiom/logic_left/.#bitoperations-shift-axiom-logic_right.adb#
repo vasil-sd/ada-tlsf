@@ -1,0 +1,6 @@
+package body BitOperations.Shift.Axiom.Logic_Right with
+SPAis
+
+   
+
+end BitOperations.Shift.Axiom.Logic_Right;

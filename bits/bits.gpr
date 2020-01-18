@@ -1,0 +1,74 @@
+library project Bits is
+
+   Version := "0.1";
+   for Library_Name use "Bits";
+   for Library_Standalone use "no";
+   
+   for Source_Dirs use ("src/**");
+   for Object_Dir use "obj";
+   for Library_Dir use "./lib";
+
+   type Build_Type is ("Release", "Debug");
+   Build : Build_Type := external ("Build_Type", "Debug");
+   
+   Theory_Files := ();
+   Axiom_Files := ();
+   
+   case Build is
+      when "Debug" => 
+         Theory_Files := ("bit_vectors_prove.ads");
+         
+         Axiom_Files := (
+                          "bitoperations-search-axiom.ads",
+                          "bitoperations-search-axiom-most_significant_bit.ads",
+                          "bitoperations-search-axiom-most_significant_bit.adb",
+                          "bitoperations-shift-axiom.ads",
+                          "bitoperations-shift-axiom-logic_left.adb",
+                          "bitoperations-shift-axiom-logic_left.ads",
+                          "bitoperations-shift-axiom-logic_right.adb",
+                          "bitoperations-shift-axiom-logic_right.ads"
+                         );
+         
+      when "Release" => null;
+   end case;
+   
+   for Source_Files use (
+                         "bitoperations.ads",
+                         "bitoperations-extract.ads",
+                         "bitoperations-extract.adb",
+                         "bitoperations-mask.ads",
+                         "bitoperations-search.adb",
+                         "bitoperations-search.ads",
+                         "bitoperations-shift.adb",
+                         "bitoperations-shift.ads",
+                         "bitoperations-types.ads",
+                         "bits.ads"
+                        );
+   
+ case Build is
+        when "Release" => null;
+        when "Debug" =>
+           for Source_Files use
+             project'Source_Files & Axiom_Files & Theory_Files;
+   end case;
+
+
+   package Compiler is
+      case Build is
+         when "Release" => for Switches ("ada") use ("-gnatp", "-O2", "-gnat12");
+         when "Debug" => for Switches ("ada") use ("-fPIC", "-gnatQ", "-ffunction-sections", "-fdata-sections", "-gnato", "-fstack-check", "-gnatd.v", "-g", "-gnata", "-gnat12", "-gnatf", "-fcallgraph-info=su,da", "-gnatVa");
+      end case;
+   end Compiler;
+   
+   package Builder is
+      case Build is
+         when "Release" => null;
+         when "Debug" => for Switches ("ada") use ("-g");
+      end case;
+   end Builder;
+   
+   package Prove is
+       for Proof_Dir use "./proof";
+   end Prove;
+   
+end Bits;

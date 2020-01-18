@@ -1,0 +1,79 @@
+module Msb
+  use        import int.Int
+  use        import bv.Pow2int
+
+  function msb_logic (a : int) : int
+
+  axiom msb_Z: msb_logic 0x1 = 0
+  axiom msb_S: forall i : int. msb_logic (i * 2) = msb_logic (i) + 1
+  axiom msb_K: forall i : int. forall j : int. 0 <= i < 64 /\ pow2(i) <= j < pow2(i+1) -> msb_logic j = i
+
+  lemma msb_K_3: msb_logic 3 = 1
+
+  lemma msb_0: msb_logic 0x1 = 0
+  lemma msb_1: msb_logic 0x2 = 1
+  lemma msb_2: msb_logic 0x4 = 2
+  lemma msb_3: msb_logic 0x8 = 3
+  lemma msb_4: msb_logic 0x10 = 4
+  lemma msb_5: msb_logic 0x20 = 5
+  lemma msb_6: msb_logic 0x40 = 6
+  lemma msb_7: msb_logic 0x80 = 7
+  lemma msb_8: msb_logic 0x100 = 8
+  lemma msb_9: msb_logic 0x200 = 9
+  lemma msb_10: msb_logic 0x400 = 10
+  lemma msb_11: msb_logic 0x800 = 11
+  lemma msb_12: msb_logic 0x1000 = 12
+  lemma msb_13: msb_logic 0x2000 = 13
+  lemma msb_14: msb_logic 0x4000 = 14
+  lemma msb_15: msb_logic 0x8000 = 15
+  lemma msb_16: msb_logic 0x10000 = 16
+  lemma msb_17: msb_logic 0x20000 = 17
+  lemma msb_18: msb_logic 0x40000 = 18
+  lemma msb_19: msb_logic 0x80000 = 19
+  lemma msb_20: msb_logic 0x100000 = 20
+  lemma msb_21: msb_logic 0x200000 = 21
+  lemma msb_22: msb_logic 0x400000 = 22
+  lemma msb_23: msb_logic 0x800000 = 23
+  lemma msb_24: msb_logic 0x1000000 = 24
+  lemma msb_25: msb_logic 0x2000000 = 25
+  lemma msb_26: msb_logic 0x4000000 = 26
+  lemma msb_27: msb_logic 0x8000000 = 27
+  lemma msb_28: msb_logic 0x10000000 = 28
+  lemma msb_29: msb_logic 0x20000000 = 29
+  lemma msb_30: msb_logic 0x40000000 = 30
+  lemma msb_31: msb_logic 0x80000000 = 31
+  lemma msb_32: msb_logic 0x100000000 = 32
+  lemma msb_33: msb_logic 0x200000000 = 33
+  lemma msb_34: msb_logic 0x400000000 = 34
+  lemma msb_35: msb_logic 0x800000000 = 35
+  lemma msb_36: msb_logic 0x1000000000 = 36
+  lemma msb_37: msb_logic 0x2000000000 = 37
+  lemma msb_38: msb_logic 0x4000000000 = 38
+  lemma msb_39: msb_logic 0x8000000000 = 39
+  lemma msb_40: msb_logic 0x10000000000 = 40
+  lemma msb_41: msb_logic 0x20000000000 = 41
+  lemma msb_42: msb_logic 0x40000000000 = 42
+  lemma msb_43: msb_logic 0x80000000000 = 43
+  lemma msb_44: msb_logic 0x100000000000 = 44
+  lemma msb_45: msb_logic 0x200000000000 = 45
+  lemma msb_46: msb_logic 0x400000000000 = 46
+  lemma msb_47: msb_logic 0x800000000000 = 47
+  lemma msb_48: msb_logic 0x1000000000000 = 48
+  lemma msb_49: msb_logic 0x2000000000000 = 49
+  lemma msb_50: msb_logic 0x4000000000000 = 50
+  lemma msb_51: msb_logic 0x8000000000000 = 51
+  lemma msb_52: msb_logic 0x10000000000000 = 52
+  lemma msb_53: msb_logic 0x20000000000000 = 53
+  lemma msb_54: msb_logic 0x40000000000000 = 54
+  lemma msb_55: msb_logic 0x80000000000000 = 55
+  lemma msb_56: msb_logic 0x100000000000000 = 56
+  lemma msb_57: msb_logic 0x200000000000000 = 57
+  lemma msb_58: msb_logic 0x400000000000000 = 58
+  lemma msb_59: msb_logic 0x800000000000000 = 59
+  lemma msb_60: msb_logic 0x1000000000000000 = 60
+  lemma msb_61: msb_logic 0x2000000000000000 = 61
+  lemma msb_62: msb_logic 0x4000000000000000 = 62
+  lemma msb_63: msb_logic 0x8000000000000000 = 63
+  lemma msb_64: msb_logic 0x10000000000000000 = 64
+end
+
