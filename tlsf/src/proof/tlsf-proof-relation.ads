@@ -1,5 +1,5 @@
 with Ada.Containers.Functional_Vectors;
-
+with TLSF.Proof.Util.Vectors;
 generic
    type Element_Type is private;
    with function Elements_Equal(Left, Right : Element_Type)
@@ -26,6 +26,10 @@ package TLSF.Proof.Relation with SPARK_Mode is
      (Element_Type => Arrow,
       Index_Type   => Positive_Count_Type);
    
+   package U is new TLSF.Proof.Util.Vectors(V);
+   
+   use U;
+   
    subtype R is V.Sequence;
    
    function "="
@@ -43,33 +47,6 @@ package TLSF.Proof.Relation with SPARK_Mode is
    function Empty (Container : V.Sequence) return Boolean
    is (V.Length(Container) = 0);
    
-   function Find (Container : V.Sequence;
-                  A         : Arrow)
-                  return Count_Type
-     with 
-       Global => null,
-       Post =>
-         (if Find'Result > 0
-            then
-              (V.Contains(Container, Find'Result, Find'Result, A)
-               and Find'Result <= V.Length (Container)
-               and A = V.Get (Container, Find'Result))
-                else
-            (not V.Contains(Container, 1, V.Length(Container), A)));
-   
-   function Find_Second (Container : V.Sequence;
-                         A         : Arrow)
-                         return Count_Type
-     with
-       Global => null,
-       Post =>
-         ( if Find_Second'Result > 0 then
-             Find_Second'Result <= V.Length (Container)
-           and Find(Container, A) > 0
-           and Find(Container, A) < Find_Second'Result
-           and A = V.Get (Container, Find(Container, A))
-           and A = V.Get (Container, Find_Second'Result));
-   
    function Relate(Container : V.Sequence;
                    From, To  : Element_Type) return V.Sequence
      with 
@@ -82,23 +59,7 @@ package TLSF.Proof.Relation with SPARK_Mode is
               and V.Length (Relate'Result) = V.Length (Container) + 1
               and Container < Relate'Result
               and Arrow'(From, To) = V.Get (Relate'Result, Find(Relate'Result, Arrow'(From, To))));
-
-   
-   function At_Least_One (Container : V.Sequence;
-                          A         : Arrow)
-                          return Boolean
-   is (Find(Container, A) > 0);
-   
-   function Exactly_One (Container : V.Sequence;
-                         A         : Arrow)
-                         return Boolean
-   is (Find(Container, A) > 0 and Find_Second(Container, A) < 0);
-   
-   function At_Most_One (Container : V.Sequence;
-                         A         : Arrow)
-                         return Boolean
-   is (Find_Second(Container, A) < 0);
-   
+  
    function Related (Container : V.Sequence;
                      From, To  : Element_Type)
                      return Boolean
