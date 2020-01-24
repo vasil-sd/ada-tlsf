@@ -31,7 +31,7 @@ package body TLSF.Proof.Util.Vectors with SPARK_Mode is
       Len : Count_Type renames V.Length(Container);
       First_Idx : constant Extended_Index_Type := Find (Container, E);
    begin
-      if Len > 1 and First_Idx in V.First .. Extended_Index_Type'Pred(V.Last(Container)) then
+      if Len > 1 and First_Idx in Index_Type'First .. Extended_Index_Type'Pred(V.Last(Container)) then
          for Idx in Extended_Index_Type'Succ(First_Idx)..V.Last(Container) loop
             if V.Get(Container, Idx) = E then
                return Idx;
