@@ -130,10 +130,12 @@ fact {
 }
 
 -- блок памяти
--- характеризуется адресом
--- и размером
+-- характеризуются адресом и размером
 sig Block {
+    -- блоков с одинаковыми адресами нет (disj)
+    -- хотя может это вынести на проверку валидности?
     Address : disj Addr one -> Time,
+    -- а вот с одинаковыми размерами могут быть
     Size    : UniqSize one -> Time
 }
 
@@ -147,31 +149,56 @@ sig Block {
 -- Кроме первого адреса все остальные являются сложением предыдущего с 
 -- некоторым уникальным размером
 
+
+-- немного полезных вспомогательных функций:
+
+-- начальный блок: блок с минимальным адресом на нужный момент времени
 fun FirstBlock[t:Time] : one Block { {B : Block | B.Address.t = min[Block.Address.t]} }
+
+-- конечный - с максимальным адресом на нужный момент времени
 fun LastBlock[t: Time] : one Block { {B : Block | B.Address.t = max[Block.Address.t]} }
 
+-- получить следующий блок для заданного на момент времени t
+fun NextBlock[t: Time, b : Block] : Block {
+  let NextBlockAddress = Sum[b.Address.t, b.Size.t] -- адрес следующего
+     -- получаем отношение Block -> Addr на нужный момент времени
+  | let RelBlocksToAddressForTime = Address.t
+     -- джойним справа по NextBlockAddress и получаем все блоки по этому адресу
+  | let AllBlocksAtAddress = RelBlocksToAddressForTime.NextBlockAddress
+  | AllBlocksAtAddress -- возвращаем результат
+}
+
+-- предыдущий блок у данного на моент времени t
+fun PrevBlock[t: Time, b : Block] : Block {
+  -- возвращаем множество блоков, адрес у которых равен
+  -- сумме адреса текущего с его размером
+  {B : Block | Sum[B.Address.t, B.Size.t] = b.Address.t}
+}
+
 pred Valid[t:Time] {
-  -- у всех кроме последнего есть следующий
-  all B : Block
-  | B != LastBlock[t] implies {
-    one Address.t.(Sum[B.Address.t, B.Size.t])
-  }
+  -- у всех кроме последнего есть следующий и ровно один
+  -- и предыдущий у следующего это текущий блок
+  all B : Block - LastBlock[t]
+  | one NextBlock[t, B]
+    and PrevBlock[t, NextBlock[t,B]] = B
+
   -- у последнего нет следующего
-  no Address.t.(Sum[LastBlock[t].Address.t, LastBlock[t].Size.t])
+  no NextBlock[t, LastBlock[t]]
+
   -- у первого нет предыдущего
-  FirstBlock[t].Address.t not in { 
-    A : Addr
-    | all B : Block
-    | A = Sum[B.Address.t, B.Size.t]
-  }
+  no PrevBlock[t, FirstBlock[t]]
+
   -- у каждого кроме первого есть предыдущий
+  -- и следующий у предыдущего - это текущий блок
   all B : Block - FirstBlock[t]
-  | one BPrev : Block - B
-  | Sum[BPrev.Address.t, BPrev.Size.t] = B.Address.t
+  | one PrevBlock[t, B]
+    and NextBlock[t, PrevBlock[t, B]] = B
 }
 
 -- этот предикат говорит о том, что с T.prev до T поменялись
 -- только блоки B_Except, все остальные остались такие же
+-- его будем использовать для рамочных гипотез при
+-- написании предикатов к операциям над блоками
 pred AllBlocksAreSameExcept[T:Time, B_Except:set Block] {
   all B : Block - B_Except {
     B.Address.(T.prev) = B.Address.T
@@ -179,6 +206,9 @@ pred AllBlocksAreSameExcept[T:Time, B_Except:set Block] {
   }
 }
 
+-- тут простой запуск поиска моделей, чтобы посмотреть,
+-- что у нас получается и как работают предикаты
+Show_All_Except_One_Are_Unchanged_During_Time:
 run { 
   all t : Time | Valid[t]
   one B : Block
