@@ -1,4 +1,4 @@
-module address[exactly Time]
+module block[exactly Time]
 
 -- моменты времени упорядочены
 open util/ordering[Time]
