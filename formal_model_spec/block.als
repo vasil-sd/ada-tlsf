@@ -1,4 +1,7 @@
-module address
+module address[exactly Time]
+
+-- моменты времени упорядочены
+open util/ordering[Time]
 
 -- адреса и размеры упорядочены
 open util/ordering[Addr]
@@ -17,6 +20,11 @@ open util/ordering[UniqSize]
 -- Закрывают всю память встык, то есть (кроме первого и последнего):
 -- адрес предыдущего + его размер = адресу следующего
 -- у первого нет предыдущего, у последнего - следующего
+
+-- для динамики операций введём время у размеров и адресов блоков
+-- для самих адресов и размеров вводить время не будем (возможно это стоило бы
+-- ввести для привычности и наглядности, но это потребует намного больше
+-- писанины, а семантически будет эквивалентно текущему варианту)
 
 -- Основные инварианты, которые нужно сохранять, введя операции над блоками
 -- 1. Сплошное покрытие блоками памяти, без "дыр", по-умолчению считаем, что
@@ -44,9 +52,7 @@ fact {
   all Left : Addr - last
   | all Right : UniqSize 
   | let S = Sum[Left, Right]
-  {
-    gt[S, Left]
-  }  
+  | gt[S, Left] 
 }
 
 -- Добавление одинакового размера не должно приводить к разным адресам
@@ -119,8 +125,8 @@ fact {
 -- характеризуется адресом
 -- и размером
 sig Block {
-    Address : disj one Addr,
-    Size    : one UniqSize
+    Address : disj Addr one -> Time,
+    Size    : UniqSize one -> Time
 }
 
 -- Расположение блоков в памяти: друг за другом, без перекрытия
@@ -133,27 +139,41 @@ sig Block {
 -- Кроме первого адреса все остальные являются сложением предыдущего с 
 -- некоторым уникальным размером
 
-fun FirstBlock : one Block { {B : Block | B.Address = min[Block.Address]} }
-fun LastBlock : one Block { {B : Block | B.Address = max[Block.Address]} }
+fun FirstBlock[t:Time] : one Block { {B : Block | B.Address.t = min[Block.Address.t]} }
+fun LastBlock[t: Time] : one Block { {B : Block | B.Address.t = max[Block.Address.t]} }
 
-fact {
+pred Valid[t:Time] {
   -- у всех кроме последнего есть следующий
   all B : Block
-  | B != LastBlock implies {
-    one Address.(Sum[B.Address, B.Size])
+  | B != LastBlock[t] implies {
+    one Address.t.(Sum[B.Address.t, B.Size.t])
   }
   -- у последнего нет следующего
-  no Address.(Sum[LastBlock.Address, LastBlock.Size])
+  no Address.t.(Sum[LastBlock[t].Address.t, LastBlock[t].Size.t])
   -- у первого нет предыдущего
-  FirstBlock.Address not in { 
+  FirstBlock[t].Address.t not in { 
     A : Addr
-    | all B : Block 
-    | A = Sum[B.Address, B.Size]
+    | all B : Block
+    | A = Sum[B.Address.t, B.Size.t]
   }
   -- у каждого кроме первого есть предыдущий
-  all B : Block - FirstBlock
+  all B : Block - FirstBlock[t]
   | one BPrev : Block - B
-  | Sum[BPrev.Address, BPrev.Size] = B.Address
+  | Sum[BPrev.Address.t, BPrev.Size.t] = B.Address.t
 }
 
-run {}  for 5 but 10 UniqSize, exactly 4 Block
+-- этот предикат говорит о том, что с T.prev до T поменялись
+-- только блоки B_Except, все остальные остались такие же
+pred AllBlocksAreSameExcept[T:Time, B_Except:set Block] {
+  all B : Block - B_Except {
+    B.Address.(T.prev) = B.Address.T
+    B.Size.(T.prev) = B.Size.T
+  }
+}
+
+run { 
+  all t : Time | Valid[t]
+  one B : Block
+  | all T : Time - first
+  | AllBlocksAreSameExcept[T, B]
+}  for 5 but 10 UniqSize, exactly 4 Block, exactly 8 Time
