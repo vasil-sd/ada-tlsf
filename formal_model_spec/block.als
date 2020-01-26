@@ -121,6 +121,14 @@ fact {
   | Sum[Left, Right] = Sum[Right, Left]
 }
 
+-- ассоциативность
+fact {
+  all S1 : UniqSize
+  | all S2 : UniqSize
+  | all S3 : UniqSize
+  | Sum[Sum[S1, S2], S3] = Sum[S1, Sum[S2, S3]]
+}
+
 -- блок памяти
 -- характеризуется адресом
 -- и размером
