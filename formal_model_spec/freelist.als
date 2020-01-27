@@ -34,13 +34,7 @@ enum BlockType {
 -- тип у блока в определённый момент времени может и отсутствовать,
 -- если этот блок неиспользуется (абстрактный)
 one sig Types {
-  Type : Block -> BlockType -> Time
-}
-
-fact {
-  all B : Block
-  | all T : Time
-  | lone B.Type[T]
+  Type : Block -> BlockType lone -> Time
 }
 
 -- получить тип блока на конкретный момент времени 
