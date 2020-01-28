@@ -17,6 +17,20 @@ fact {
   UniqSize in FreeList.SizeClass
 }
 
+-- получение списка свободных для конкретного класса размеров
+fun FreeListForSizeClass[Size : UniqSize] : FreeList {
+  {FL : FreeList | FL.SizeClass = Size}
+}
+
+-- Тут, на всякий случай, поставим проверку того,
+-- что свободные списки и классы размеров в соотношении 1-к-1
+-- Если будем рефакторить, чтобы не было непредвиденный эфектов
+-- с возвратом функцией FreeListForSizeClass нескольких списков
+-- для одного класса размеров
+assert {
+  all S : UniqSize | one S.FreeListForSizeClass
+}
+
 -- Инварианты:
 -- 1. В списках свободных могут быть только конкретные блоки
 -- 2. Размеры блоков должны соответствовать размерам списков
@@ -68,6 +82,20 @@ pred Valid[T : Time] {
   all B : T.FreeBlocks | B.FreeList[T].SizeClass = B.Size.T
 }
 
+-- этот предикат говорит о том, что с T до T.next поменялись
+-- только списки FL_Except, все остальные остались такие же
+-- его будем использовать для рамочных гипотез при
+-- написании предикатов к операциям над блоками
+pred AllFreeListsAreSameExcept[T:Time, FL_Except:set FreeList] {
+  all FL : FreeList - FL_Except
+  | FL.Blocks.(T.next) = FL.Blocks.T
+}
+
+-- аналогично для типов блоков
+pred AllBlockTypesAreSameExcept[T:Time, B_Except: set Block] {
+  all B : Block - B_Except
+  | B.Type[T.next] = B.Type[T]
+}
 -- посмотрим, что получается
 run {
   all T : Time | T.this/Valid and T.block/Valid
