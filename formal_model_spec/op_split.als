@@ -4,22 +4,13 @@ open util/ordering[Time]
 open block[Time]
 open freelist[Time]
 
-/*
-  этот модуль является одним из модулей-спецификацией на операции с блоками
-  
-  базовые операции:
+-- этот модуль является модулем-спецификацией на операцию split над блоками
 
-  1. разделить свободный блок на два свободных блока, соответственно обновить списки свободных
-  2. соединить два соседних свободных блока в один, соотв. образом обновить списки свободных
-  3. преобразовать свободный в занятый
-  4. преобразовать занятый в свободный
+-- помимо предиката самой операции, мы введём предикаты пред и пост-условий, для
+-- того чтобы было ближе к коду и легче было бы перекладывать их в код на Ada/Spark
 
-  помимо предикатов самих операций, мы введём предикаты пред и пост-условий, для
-  того, чтобы было ближе к коду и легче было бы перекладывать их в код на Ada/Spark
-*/
 
 -- общий предикат валидности модели на момент времени T
-
 pred Valid[T : Time] {
   -- все списки свободных валидные
   freelist/Valid[T]
@@ -99,14 +90,14 @@ pred SplitFreeBlock[B: Block,
     
     -- добавили в списки свободных для соответствующих
     -- классов размеров
-    B_Left.FreeList[NextT] = B_Left.Size.NextT.FreeListForSizeClass
+    B_Left.FreeList[NextT] = FreeListForSizeClass[B_Left.Size.NextT]
     B_Left.Type[NextT] = Free
 
-    B_Right.FreeList[NextT] = B_Right.Size.NextT.FreeListForSizeClass
+    B_Right.FreeList[NextT] = FreeListForSizeClass[B_Right.Size.NextT]
     B_Right.Type[NextT] = Free
 
     -- старый блок удалили из списков свободных
-    B not in B.Size.T.FreeListForSizeClass.Blocks.NextT
+    B not in FreeListForSizeClass[B.Size.T].Blocks.NextT
     no B.FreeList[NextT]
     no B.Type[NextT]
 
@@ -132,9 +123,14 @@ check {
       -- далее идут три предиката, так называемые рамочные предикаты
       -- которые задают область динамики, всё остальное считаеся неизменным
       -- во время шага T->T.next
-      T.AllBlocksAreSameExcept[B + B_Left + B_Right]
-      T.AllFreeListsAreSameExcept[FreeListForSizeClass[B.Size.T + S_Left + S_Right]]
-      T.AllBlockTypesAreSameExcept[B + B_Left + B_Right]
+      let ChangingBlocks = B + B_Left + B_Right -- изменяющиеся блоки
+      | let ChangingFreeLists = -- изменяющиеся списки свободных блоков
+            FreeListForSizeClass[B.Size.T + S_Left + S_Right] 
+        {
+          T.AllBlocksAreSameExcept[ChangingBlocks]
+          T.AllFreeListsAreSameExcept[ChangingFreeLists]
+          T.AllBlockTypesAreSameExcept[ChangingBlocks]
+        }
     }
     implies
      SplitFreeBlock_Post[B, B_Left, B_Right, S_Left, S_Right, T, T.next]
