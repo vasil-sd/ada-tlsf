@@ -3,6 +3,8 @@ with BitOperations.Shift;
 with BitOperations.Mask;
 with BitOperations.Extract;
 with BitOperations.Search;
+with BitOperations.Shift.Axiom;
+with BitOperations.Search.Axiom;
 
 generic
    type Modular is mod <>;

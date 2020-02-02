@@ -15,6 +15,7 @@ SPARK_Mode, Pure, Preelaborate is
    function Extract (Value : Modular; From, To : Bit_Position) return Modular
      with Pre => To >= From,
      Post => Extract'Result = 
-       (Shift.Logic_Right(Value, From) and Mask.Make(To - From + 1));
+       (Shift.Logic_Right(Value, From) and Mask.Make(To - From + 1))
+   and then Extract'Result < 2 ** (To - From + 1);
 
 end BitOperations.Extract;
