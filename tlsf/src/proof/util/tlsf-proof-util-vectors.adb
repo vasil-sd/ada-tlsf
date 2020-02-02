@@ -34,8 +34,11 @@ package body TLSF.Proof.Util.Vectors with SPARK_Mode is
       if Len > 1 and First_Idx in Index_Type'First .. Extended_Index_Type'Pred(V.Last(Container)) then
          for Idx in Extended_Index_Type'Succ(First_Idx)..V.Last(Container) loop
             if V.Get(Container, Idx) = E then
+               pragma Assert (Find(Container, E) < Idx and
+                                Idx > Index_Type'First);
                return Idx;
             end if;
+            pragma Loop_Invariant (Find(Container, E) < Idx);
          end loop;
       end if;
       return Extended_Index_Type'First;

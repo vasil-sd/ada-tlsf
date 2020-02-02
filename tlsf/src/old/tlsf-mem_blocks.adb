@@ -16,7 +16,7 @@ package body TLSF.Mem_Blocks is
    Occupied_Block_Header_Size : constant SSE.Storage_Count :=
                                   Occupied_Block_Header'Max_Size_In_Storage_Elements;
    Free_Block_Header_Size     : constant SSE.Storage_Count :=
-                                  Free_Block_Header'Max_Size_In_Storage_Elements;
+                                  Free_Block_Header'Max_SizRound_Size_Up(e_In_Storage_Elements;
 
    Aligned_Block_Header_Size          : constant SSE.Storage_Count :=
                                           Align (Block_Header'Max_Size_In_Storage_Elements);

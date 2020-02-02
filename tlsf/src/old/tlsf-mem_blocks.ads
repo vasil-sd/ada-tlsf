@@ -43,8 +43,6 @@ private package TLSF.Mem_Blocks is
       end record
      with Pack;
 
-   type Unit_Block_Header_Array is array(0..0) of aliased Block_Header;
-
    type Free_Lists
    is array (First_Level_Index, Second_Level_Index) of access Block_Header;
 

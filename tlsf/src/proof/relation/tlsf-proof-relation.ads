@@ -1,5 +1,5 @@
-with Ada.Containers.Functional_Vectors;
-with TLSF.Proof.Util.Vectors;
+with Ada.Containers.Functional_Sets;
+
 generic
    type Element_Type is private;
    with function Elements_Equal(Left, Right : Element_Type)
@@ -22,48 +22,37 @@ package TLSF.Proof.Relation with SPARK_Mode is
    is (Arrow'(From => A.To,
               To   => A.From));
      
-   package V is new Ada.Containers.Functional_Vectors
-     (Element_Type => Arrow,
-      Index_Type   => Positive_Count_Type);
+   package S is new Ada.Containers.Functional_Sets
+     (Element_Type => Arrow);
    
-   package U is new TLSF.Proof.Util.Vectors(V);
+   use S;
    
-   use U;
+   subtype R is S.Set;
    
-   subtype R is V.Sequence;
-   
-   function "="
-     (Left  : V.Sequence;
-      Right : V.Sequence) return Boolean renames V."=";
-   
-   function "<"
-     (Left  : V.Sequence;
-      Right : V.Sequence) return Boolean renames V."<";
+   function "="  (Left  : R; Right : R) return Boolean renames S."=";
+   function "<=" (Left  : R; Right : R) return Boolean renames S."<=";
+   function "<"  (Left  : R; Right : R) return Boolean 
+     is (Left <= Right and not (Left = Right));
 
-   function "<="
-     (Left  : V.Sequence;
-      Right : V.Sequence) return Boolean renames V."<=";
-
-   function Empty (Container : V.Sequence) return Boolean
-   is (V.Length(Container) = 0);
+   function Empty (Rel : R) return Boolean
+   is (Length(Rel) = 0);
    
-   function Relate(Container : V.Sequence;
-                   From, To  : Element_Type) return V.Sequence
+   function Relate(Container : R;
+                   From, To  : Element_Type) return R
      with 
-       Pre => V.Last (Container) < Positive_Count_Type'Last,
-     Post => (if Find(Container, Arrow'(From,To)) > 0
+       Pre => Length (Container) < Positive_Count_Type'Last,
+     Post => (if Contains(Container, Arrow'(From,To))
                 then 
-                  Relate'Result = Container
+                  Relation."="(Relate'Result, Container)
                     else
-                      Find(Relate'Result, Arrow'(From, To)) = V.Length(Relate'Result)
-              and V.Length (Relate'Result) = V.Length (Container) + 1
+                    Length (Relate'Result) = Length (Container) + 1
               and Container < Relate'Result
-              and Arrow'(From, To) = V.Get (Relate'Result, Find(Relate'Result, Arrow'(From, To))));
-  
-   function Related (Container : V.Sequence;
+              and Contains(Container, Arrow'(From, To)));
+   
+   function Related (Container : R;
                      From, To  : Element_Type)
                      return Boolean
-   is (Find(Container, Arrow'(From, To)) > 0);
+   is (Contains(Container, Arrow'(From, To)));
    
 --     function Symmetric (Container : V.Sequence) return Boolean
 --       with

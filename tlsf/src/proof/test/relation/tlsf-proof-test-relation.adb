@@ -24,6 +24,7 @@ package body TLSF.Proof.Test.Relation with SPARK_Mode is
       pragma Assert (not Relation.Related(R1,2,3));
       R1 := Relation.Relate(R1, 2,3);
       pragma Assert (Relation.Related(R1,2,3));
+      R3 := Relation.
    end Test_Find;
 
    

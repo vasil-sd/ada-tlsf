@@ -1,5 +1,5 @@
-private package TLSF.Config
-with SPARK_Mode is
+package TLSF.Config
+with SPARK_Mode, Pure, Preelaborate is
 
    Max_Block_Size_Log2 : constant := 29; -- max Block is about 512Mb
    SL_Index_Count_Log2 : constant := 6;
@@ -10,5 +10,7 @@ with SPARK_Mode is
    SL_Index_Count      : constant := 2 ** SL_Index_Count_Log2;
    FL_Index_Shift      : constant := SL_Index_Count_Log2;
    FL_Index_Count      : constant := FL_Index_Max - FL_Index_Shift + 1;
+
+   Small_Block_Size    : constant := 2 ** FL_Index_Shift;
 
 end TLSF.Config;
