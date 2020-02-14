@@ -16,6 +16,6 @@ SPARK_Mode, Pure, Preelaborate is
      with Pre => To >= From,
      Post => Extract'Result = 
        (Shift.Logic_Right(Value, From) and Mask.Make(To - From + 1))
-   and then Extract'Result < 2 ** (To - From + 1);
+   and then Extract'Result <= 2 ** (To - From + 1) - 1;
 
 end BitOperations.Extract;
