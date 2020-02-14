@@ -1,41 +1,5 @@
 package body TLSF.Proof.Model.Block with SPARK_Mode is
-
-   function Valid(M : Formal_Model) return Boolean
-   is
-   begin
-      for Idx in 1..Last(M.Blocks) loop
-         if not Valid_Block(M, Get(M.Blocks, Idx)) then
-            return False;
-         end if;
-         pragma Assert (Integer(Get(M.Blocks, Idx).Address) + Integer(Get(M.Blocks, Idx).Size) in 0..Integer(BT.Address'Last));
-         pragma Loop_Invariant (for all I in 1..Idx => Valid_Block(M, Get(M.Blocks, I)));
-      end loop;
-      if Last(M.Blocks) >=1 then
-         if Get(M.Blocks, 1).Address /= M.First_Address
-           or else Next_Block_Address(Get(M.Blocks, Last(M.Blocks))) /= M.Last_Address
-         then
-            return False;
-         end if;
-      end if;
-      if Last(M.Blocks) > 1 then
-         for Idx in 1 .. Last(M.Blocks)-1 loop
-            if not Neighbor_Blocks(Get(M.Blocks, Idx), Get(M.Blocks, Idx + 1)) then
-               return False;
-            end if;
-            pragma Loop_Invariant
-              (for all I in 1 .. Idx 
-               => Neighbor_Blocks(Get(M.Blocks, I), Get(M.Blocks, I + 1)));
-         end loop;        
-      end if;
-      return True;
-   end Valid;
-
-   function In_Model(M : Formal_Model; B : Block) return Boolean
-   is
-   begin
-      return Contains(M.Blocks, 1, Last(M.Blocks), B);
-   end In_Model;
-   
+  
    function Init_Model(First_Address: BT.Aligned_Address;
                        Size         : BT.Aligned_Size)
                        return Formal_Model
@@ -43,17 +7,16 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
       Model : Formal_Model;
       B     : Block := (Address => First_Address, Size => Size);
    begin
-      Model.First_Address := First_Address;
       pragma Assert (Integer(First_Address) + Integer(Size) in 0 .. Integer(BT.Address'Last));
       pragma Assert (First_Address + Size > First_Address);
-      Model.Last_Address := First_Address + Size;
-      --Model := Formal_Model'(Model.Blocks, First_Address, First_Address + Size);
-      pragma Assert (B.Address in Model.First_Address..Model.Last_Address);
+      Model.Mem_Region := Address_Space'(First => First_Address,
+                                         Last  => First_Address + Size);
+      pragma Assert (B.Address in Model.Mem_Region.First..Model.Mem_Region.Last);
       pragma Assert (Integer(B.Address) + Integer(B.Size) in 0..Integer(BT.Address'Last));
-      pragma Assert (B.Address + B.Size in Model.First_Address..Model.Last_Address);
-      pragma Assert(Valid_Block(Model, B));
+      pragma Assert (B.Address + B.Size in Model.Mem_Region.First..Model.Mem_Region.Last);
+      pragma Assert(Valid_Block(Model.Mem_Region, B));
       Model.Blocks := Add(Model.Blocks, B);
-      pragma Assert (Valid_Block(Model, Get(Model.Blocks,1)));
+      pragma Assert (Valid_Block(Model.Mem_Region, Get(Model.Blocks,1)));
       return Model;
    end Init_Model;
    
@@ -83,11 +46,24 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                      and In_Model(M, B)
                      then Last(M.Blocks) >= 2);
       pragma Assert (Last(M.Blocks) >= 2);
-      pragma Assert (Valid_Block(M, Prev));
+      pragma Assert (Valid_Block(M.Mem_Region, Prev));
       pragma Assert (Contains(M.Blocks, 2, Last(M.Blocks), B));
+      pragma Assert (for all From in 1..Last(M.Blocks) => 
+                       (for all To in 1..From => 
+                          (if Partial_Valid(M.Mem_Region, M.Blocks, 1, Last(M.Blocks))
+                           then Partial_Valid(M.Mem_Region, M.Blocks, From, To))));
+      pragma Assert (for all From in 1..Last(M.Blocks) => 
+                       (for all To in 1..From => 
+                          (if Partial_Valid(M.Mem_Region, M.Blocks, From, To)
+                           then Coverage_Is_Continuous(M.Mem_Region, M.Blocks, From, To))));
+      pragma Assert (for all From in 1..Last(M.Blocks)-1 => 
+                       (if not Neighbor_Blocks(Get(M.Blocks, From), Get(M.Blocks, From+1))
+                        then not Coverage_Is_Continuous(M.Mem_Region, M.Blocks, From, From+1)));
       for Idx in 2..Last(M.Blocks) loop
-         pragma Loop_Invariant (Valid_Block(M, Prev));
-         pragma Loop_Invariant (Valid_Block(M, Get(M.Blocks, Idx)));
+         pragma Loop_Invariant (Prev = Get(M.Blocks, Idx-1));
+         pragma Loop_Invariant (All_Blocks_Are_Valid(M.Mem_Region, M.Blocks, Idx-1, Idx));
+         pragma Loop_Invariant (Coverage_Is_Continuous(M.Mem_Region, M.Blocks, Idx-1, Idx));
+         pragma Loop_Invariant (Neighbor_Blocks(Get(M.Blocks, Idx-1), Get(M.Blocks, Idx)));
          pragma Loop_Invariant (Neighbor_Blocks(Prev, Get(M.Blocks, Idx)));
          pragma Loop_Invariant (if Get(M.Blocks, Idx) = B
                                 then Neighbor_Blocks(Prev, B));
@@ -113,9 +89,21 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
       Next : Block := Get(M.Blocks, 1);
    begin
       pragma Assert (Contains(M.Blocks, 1, Last(M.Blocks)-1, B));
+      pragma Assert (for all From in 1..Last(M.Blocks) => 
+                       (for all To in 1..From => 
+                          (if Partial_Valid(M.Mem_Region, M.Blocks, 1, Last(M.Blocks))
+                           then Partial_Valid(M.Mem_Region, M.Blocks, From, To))));
+      pragma Assert (for all From in 1..Last(M.Blocks) => 
+                       (for all To in 1..From => 
+                          (if Partial_Valid(M.Mem_Region, M.Blocks, From, To)
+                           then Coverage_Is_Continuous(M.Mem_Region, M.Blocks, From, To))));
+      pragma Assert (for all From in 1..Last(M.Blocks)-1 => 
+                       (if not Neighbor_Blocks(Get(M.Blocks, From), Get(M.Blocks, From+1))
+                        then not Coverage_Is_Continuous(M.Mem_Region, M.Blocks, From, From+1)));
       for Idx in 1..Last(M.Blocks)-1 loop
          Next := Get(M.Blocks, Idx+1);
-         pragma Loop_Invariant (Valid_Block(M, Next));
+         pragma Loop_Invariant (Valid_Block(M.Mem_Region, Next));
+         pragma Loop_Invariant (All_Blocks_Are_Valid(M.Mem_Region, M.Blocks, Idx, Idx+1));
          pragma Loop_Invariant (Neighbor_Blocks(Get(M.Blocks, Idx), Next));
          pragma Loop_Invariant (if Get(M.Blocks, Idx) = B
                                 then Neighbor_Blocks(B, Next));
@@ -125,8 +113,580 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
       end loop;
       pragma Assert (if Next = Get(M.Blocks, 1)
                      then not Contains(M.Blocks, 1, Last(M.Blocks)-1, B));
-      pragma Assert(Neighbor_Blocks(B, Next));
+      pragma Assert (Neighbor_Blocks(B, Next));
       return Next;
    end Get_Next;
+
+   function Is_Sub_Block (AS: Address_Space; B_Sub, B : Block) return Boolean
+   is (B_Sub.Address in B.Address .. B.Address + B.Size - 1
+       and B_Sub.Address + B_Sub.Size - 1 in B.Address .. B.Address + B.Size - 1)
+     with Pre => Valid_Block(AS, B_Sub) and Valid_Block(AS, B);
    
+   procedure Sub_Blocks_Preserves_Overlapping(AS1, AS2: Address_Space;
+                                              BS1, BS2: FV_Pkg.Sequence;
+                                              From    : Index_Type;
+                                              To      : Extended_Index)
+     with
+       Global => null,
+       Pre => 
+         (To <= Last(BS1) and To <= Last(BS2))
+         and then (All_Blocks_Are_Valid(AS1, BS1, From, To)
+                   and All_Blocks_Are_Valid(AS2, BS2, From, To))
+     and then Blocks_Do_Not_Overlap(AS1, BS1, From, To)
+     and then AS2 = AS1
+     and then (for all Idx in From..To =>
+                 (Get(BS2, Idx) = Get(BS1, Idx) or
+                      Is_Sub_Block(AS1, Get(BS2, Idx), Get(BS1, Idx)))),
+     Post => Blocks_Do_Not_Overlap(AS2, BS2, From, To)
+   is
+   begin
+      for Idx in From..To loop
+         null;
+         pragma Assert (Get(BS1, Idx) = Get(BS2, Idx)
+                        or Is_Sub_Block(AS1, Get(BS2, Idx), Get(BS1, Idx)));
+         pragma Loop_Invariant(Blocks_Do_Not_Overlap(AS1, BS1, From, Idx));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 then not Blocks_Overlap
+                        (AS1, Get(BS1, I1), Get(BS1, I2)))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 and Get(BS1, I1) = Get(BS2, I1) and
+                      (Get(BS1, I2) = Get(BS2, I1)
+                       or Is_Sub_Block(AS1, Get(BS2, Idx), Get(BS1, Idx))) and AS1 = AS2
+                    then (if not Blocks_Overlap (AS1, Get(BS1, I1), Get(BS1, I2))
+                      then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2))))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 and Get(BS1, I1) = Get(BS2, I1) and
+                      (Get(BS1, I2) = Get(BS2, I1)
+                       or Is_Sub_Block(AS2, Get(BS2, Idx), Get(BS1, Idx))) 
+                    and AS1 = AS2
+                    then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2)))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 
+                    then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2)))));
+         pragma Loop_Invariant(Blocks_Do_Not_Overlap(AS2, BS2, From, Idx));
+      end loop;
+      pragma Assert (Blocks_Do_Not_Overlap(AS2, BS2, From, To));
+      
+   end Sub_Blocks_Preserves_Overlapping;
+   
+   procedure Overlapping_Preservation(AS1, AS2: Address_Space;
+                                      BS1, BS2: FV_Pkg.Sequence;
+                                      From    : Index_Type;
+                                      To      : Extended_Index)
+     with
+       Global => null,
+       Pre => 
+         (To <= Last(BS1) and To <= Last(BS2))
+         and then (All_Blocks_Are_Valid(AS1, BS1, From, To)
+                   and All_Blocks_Are_Valid(AS2, BS2, From, To))
+         and then Range_Equal(BS1, BS2, From, To)
+     and then Blocks_Do_Not_Overlap(AS1, BS1, From, To)
+     and then AS2 = AS1,
+     Post => Blocks_Do_Not_Overlap(AS2, BS2, From, To)
+   is
+   begin
+      for Idx in From..To loop
+         null;
+         pragma Assert (Get(BS1, Idx) = Get(BS2, Idx));
+         pragma Loop_Invariant(Blocks_Do_Not_Overlap(AS1, BS1, From, Idx));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 then not Blocks_Overlap
+                        (AS1, Get(BS1, I1), Get(BS1, I2)))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 and Get(BS1, I1) = Get(BS2, I1) and
+                          Get(BS1, I2) = Get(BS2, I1) and AS1 = AS2
+                    then (if not Blocks_Overlap (AS1, Get(BS1, I1), Get(BS1, I2))
+                     then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2))))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 and Get(BS1, I1) = Get(BS2, I1) and
+                          Get(BS1, I2) = Get(BS2, I1) and AS1 = AS2
+                    then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2)))));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if I1 /= I2 
+                    then not Blocks_Overlap(AS2, Get(BS2, I1), Get(BS2, I2)))));
+         pragma Loop_Invariant(Blocks_Do_Not_Overlap(AS2, BS2, From, Idx));
+      end loop;
+      pragma Assert (Blocks_Do_Not_Overlap(AS2, BS2, From, To));
+   end Overlapping_Preservation;
+   
+   procedure Uniqness_Preservation(AS1, AS2: Address_Space;
+                                   BS1, BS2: FV_Pkg.Sequence;
+                                   From    : Index_Type;
+                                   To      : Extended_Index)
+     with
+       Global => null,
+       Pre => 
+         (To <= Last(BS1) and To <= Last(BS2))
+         and then (All_Blocks_Are_Valid(AS1, BS1, From, To)
+                   and All_Blocks_Are_Valid(AS2, BS2, From, To))
+         and then Range_Equal(BS1, BS2, From, To)
+     and then All_Block_Are_Uniq(AS1, BS1, From, To)
+     and then AS2 = AS1,
+     Post => All_Block_Are_Uniq(AS2, BS2, From, To)
+   is
+   begin
+      for Idx in From..To loop
+         null;
+         pragma Loop_Invariant
+           (for all I in From..Idx =>
+              Get(BS1, I) = Get(BS2, I));
+         pragma Loop_Invariant(All_Block_Are_Uniq(AS1, BS1, From, Idx));
+         pragma Loop_Invariant
+           (for all I1 in From..Idx =>
+              (for all I2 in From..Idx =>
+                   (if Get(BS2, I1) = Get (BS2, I2) 
+                    then I1 = I2 )));
+         pragma Loop_Invariant(All_Block_Are_Uniq(AS2, BS2, From, Idx));
+      end loop;
+      pragma Assert (All_Block_Are_Uniq(AS2, BS2, From, To));
+   end Uniqness_Preservation;
+
+   function Is_Block_Splitted(AS                 : Address_Space;
+                              B, B_Left, B_Right : Block)
+                              return Boolean
+   is (B_Left.Address = B.Address
+       and Next_Block_Address(B_Left) = B_Right.Address
+       and B.Size = B_Left.Size + B_Right.Size)
+   with Pre => Valid_Block(AS, B)
+     and Valid_Block(AS, B_Left)
+     and Valid_Block(AS, B_Right);
+   
+   function Shift_Index (Idx    : Index_Type;
+                         Offset : Count_Type'Base)
+                         return Index_Type
+   is (Index_Type'Val (Index_Type'Pos (Idx) + Offset))
+     with
+       Global => null,
+       Pre => (if Offset < 0 then
+                 Index_Type'Pos (Index_Type'Base'First) - Offset <=
+                     Index_Type'Pos (Index_Type'First))
+       and then (Offset in 
+                   Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Idx) ..
+                       Index_Type'Pos (Index_Type'Last) - Index_Type'Pos (Idx)),
+   Post => Shift_Index'Result in Index_Type'Range;
+   pragma Annotate (GNATprove, Inline_For_Proof, Shift_Index);
+                   
+   procedure Range_Shifted_Preserves_Partial_Validity 
+     (Old_Space, New_Space   : Address_Space;
+      Old_Blocks, New_Blocks : FV_Pkg.Sequence;
+      From                   : Index_Type;
+      To                     : Extended_Index;
+      Offset                 : Count_Type'Base)
+     with
+       Global => null,
+       Pre =>
+         Old_Space = New_Space
+         and then
+            To <= Last (Old_Blocks)
+         and then
+            (if Offset < 0 then
+             Index_Type'Pos (Index_Type'Base'First) - Offset <=
+                Index_Type'Pos (Index_Type'First))
+         and then
+            (if From <= To then
+               Offset in
+                 Index_Type'Pos (Index_Type'First) - Index_Type'Pos (From) ..
+             (Index_Type'Pos (Index_Type'First) - 1) + Length (New_Blocks) -
+                     Index_Type'Pos (To))
+         and then Range_Shifted (Old_Blocks, New_Blocks, From, To, Offset)
+     and then Partial_Valid (Old_Space, Old_Blocks, From, To),
+     Post =>
+       (if From <= To then
+          Partial_Valid (New_Space,
+            New_Blocks, 
+            Shift_Index (From, Offset),
+            Shift_Index (To, Offset)))
+   is
+   begin
+      for Idx in From..To loop
+         pragma Loop_Invariant
+           (Partial_Valid(Old_Space, Old_Blocks, From, Idx));
+         pragma Loop_Invariant
+           (for all I in From..Idx =>
+              Get(Old_Blocks, I) = Get(New_Blocks, Shift_Index(I, Offset)));
+         pragma Loop_Invariant (if Idx >= 1 then Shift_Index(Idx, Offset) >= 1);
+         pragma Loop_Invariant (if Shift_Index(Idx, Offset) >= 1 then Idx >= 1);
+         pragma Loop_Invariant
+           (if Idx >= 1 Then
+              (for all I in From..Idx-1 =>
+                   Get(Old_Blocks, I).Address < Get(Old_Blocks, I+1).Address
+               and then Get(Old_Blocks, I) = Get(New_Blocks, Shift_Index(I, Offset))
+               and then Get(Old_Blocks, I+1) = Get(New_Blocks, Shift_Index(I, Offset + 1))
+               and then Get(New_Blocks, Shift_Index(I,Offset)).Address < Get(New_Blocks, Shift_Index(I, Offset+1)).Address));
+         pragma Loop_Invariant
+           (if Shift_Index(Idx, Offset) >= 1 then
+               (for all I in Shift_Index(From,Offset)..Shift_Index(Idx, Offset)-1 =>
+                    Get(New_Blocks, I).Address < Get(New_Blocks, I+1).Address));
+         pragma Assert (All_Blocks_Are_Valid(New_Space, New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         pragma Assert (Blocks_Addresses_Are_In_Ascending_Order(New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         pragma Assert (Coverage_Is_Continuous(New_Space, New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         pragma Assert (Blocks_Do_Not_Overlap(New_Space, New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         pragma Assert (All_Block_Are_Uniq(New_Space, New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         pragma Assert (Partial_Valid(New_Space, New_Blocks,Shift_Index(From, Offset), Shift_Index(Idx, Offset)));
+         null;
+      end loop;
+   end Range_Shifted_Preserves_Partial_Validity;
+
+   procedure Range_Equal_Preserves_Partial_Validity 
+     (Old_Space, New_Space   : Address_Space;
+      Old_Blocks, New_Blocks : FV_Pkg.Sequence;
+      From                   : Index_Type;
+      To                     : Extended_Index)
+     with Global => null,
+     Pre => To <= Last (Old_Blocks) and then To <= Last (New_Blocks)
+     and then Old_Space = New_Space and then
+     Range_Equal (Old_Blocks, New_Blocks, From, To) and then     
+     Partial_Valid (Old_Space, Old_Blocks, From, To),
+     Post => Partial_Valid (New_Space, New_Blocks, From, To)
+   is
+   begin
+      pragma Assert (for all Idx in From .. To =>
+                       Get (Old_Blocks, Idx) = Get (New_Blocks, Idx));
+      pragma Assert (Partial_Valid (New_Space, New_Blocks, From, To));
+      null;
+   end Range_Equal_Preserves_Partial_Validity;
+   
+   procedure Continuous_Coverage_Implies_Non_Overlapping
+     (Space : Address_Space;
+      Blocks : FV_Pkg.Sequence;
+      From   : Index_Type;
+      To     : Extended_Index)
+     with 
+       Global => null,
+       Pre => 
+         To <= Last (Blocks) and then 
+     All_Blocks_Are_Valid (Space, Blocks, From, To) and then
+     Coverage_Is_Continuous (Space, Blocks, From, To) and then
+     Blocks_Addresses_Are_In_Ascending_Order (Blocks, From, To),
+     Post => 
+       Blocks_Do_Not_Overlap (Space, Blocks, From, To)
+   is
+   begin
+      
+      for T in From .. To loop
+         pragma Loop_Invariant
+           (for all I in From .. T =>
+              (for all J in From .. T =>
+                   (if I < J then Get (Blocks, I).Address < Get (Blocks, J).Address)));
+ 
+         pragma Loop_Invariant
+           (for all I in From .. T =>
+              (for all J in From .. T =>
+                   (if I < J then Get (Blocks, I).Address + Get (Blocks, I).Size <= Get (Blocks, J).Address)));
+ 
+      end loop;
+
+      pragma Assert
+        (for all I in From .. To =>
+           (for all J in From .. To =>
+                (if I < J then Get (Blocks, I).Address < Get (Blocks, J).Address)));
+ 
+      pragma Assert
+        (for all I in From .. To =>
+           (for all J in From .. To =>
+                (if I < J then Get (Blocks, I).Address + Get (Blocks, I).Size <= Get (Blocks, J).Address)));
+
+      
+      pragma Assert 
+        (if not Blocks_Do_Not_Overlap (Space, Blocks, From, To)
+         then 
+           (for some I in From .. To =>
+                (for some J in From .. To =>
+                     (I < J and then 
+                      Blocks_Overlap (Space,
+                        Get (Blocks, I),
+                        Get (Blocks, J))
+                      -- case analysis
+                      and then
+                      -- I + 1 = J
+                      Get (Blocks, I).Address + Get (Blocks, I).Size > Get (Blocks, J).Address))));
+   end Continuous_Coverage_Implies_Non_Overlapping;
+   
+   procedure Partial_Validity_Is_Additive 
+     ( Space  : Address_Space;
+       Blocks : FV_Pkg.Sequence;
+       Left_From : Index_Type;
+       Left_To   : Extended_Index;
+       Right_From : Index_Type;
+       Right_To   : Extended_Index)
+     with
+       Global => null,
+       Pre => 
+         Left_To <= Last (Blocks) and then
+     Right_To <= Last (Blocks) and then
+     Left_To <= Right_To and then
+     Left_From <= Right_From and then
+     Partial_Valid (Space, Blocks, Left_From, Left_To) and then 
+     Partial_Valid (Space, Blocks, Right_From, Right_To) and then
+     Right_From <= Left_To,
+     Post => Partial_Valid (Space, Blocks, Left_From, Right_To)
+   is
+   begin
+       for Idx in Left_From..Right_To loop
+         pragma Loop_Invariant
+           (if Idx >= 1 Then
+              (for all I in Left_From..Idx-1 =>
+                   Get (Blocks, I).Address < Get (Blocks, I + 1).Address));
+         pragma Assert (All_Blocks_Are_Valid (Space, Blocks, Left_From, Idx));
+         pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (Blocks, Left_From, Idx));
+         pragma Assert (Coverage_Is_Continuous (Space, Blocks, Left_From, Idx));
+         Continuous_Coverage_Implies_Non_Overlapping (Space, Blocks, Left_From, Idx); 
+         pragma Assert (Blocks_Do_Not_Overlap (Space, Blocks, Left_From, Idx));
+         pragma Assert (All_Block_Are_Uniq (Space, Blocks, Left_From, Idx));
+         pragma Assert (Partial_Valid (Space, Blocks, Left_From, Idx));
+         null;
+      end loop;
+   end Partial_Validity_Is_Additive;
+      
+   procedure Every_Subseq_Of_Partial_Valid_Seq_Is_Partial_Valid
+     (Space  : Address_Space;
+      Blocks : FV_Pkg.Sequence;
+      From   : Index_Type;
+      To     : Extended_Index)
+     with Global => null,
+     Pre => To <= Last (Blocks)
+     and then Partial_Valid (Space, Blocks, From, To),
+     Post => (for all I in From .. To =>
+                (for all J in From .. I =>
+                     Partial_Valid (Space, Blocks, J, I)))
+   is
+   begin
+      for I in From .. To loop
+         for J in From .. To loop
+            pragma Loop_Invariant (Partial_Valid (Space, Blocks, J, I));
+         end loop;
+      end loop;
+      null;
+   end Every_Subseq_Of_Partial_Valid_Seq_Is_Partial_Valid;
+     
+   procedure Increment_Partial_Validity
+     (Space : Address_Space;
+      Blocks : FV_Pkg.Sequence;
+      From   : Index_Type;
+      To     : Index_Type)
+     with Global => null,
+     Pre => To < Last (Blocks)
+     and then Partial_Valid (Space, Blocks, From, To)
+     and then Valid_Block (Space, Get (Blocks, To + 1))
+     and then Valid_Block (Space, Get (Blocks, To))
+     and then Neighbor_Blocks (Get (Blocks, To), Get (Blocks, To + 1)),
+     Post => Partial_Valid (Space, Blocks, From, To + 1)
+   is
+   begin
+      for Idx in From .. To loop
+         pragma Assert (Get (Blocks, Idx).Address < Get (Blocks, Idx + 1).Address);
+         pragma Assert (Neighbor_Blocks (Get (Blocks, Idx), Get (Blocks, Idx + 1)));
+         pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (Blocks, From, Idx + 1));
+         pragma Assert (Coverage_Is_Continuous (Space, Blocks, From, Idx + 1));
+         Continuous_Coverage_Implies_Non_Overlapping
+           (Space, Blocks, From, Idx + 1);
+         pragma Assert (Blocks_Do_Not_Overlap (Space, Blocks, From, Idx + 1));
+         pragma Assert (All_Block_Are_Uniq (Space, Blocks, From, Idx + 1));
+         pragma Loop_Invariant (Get (Blocks, Idx).Address < Get (Blocks, Idx + 1).Address);
+         pragma Loop_Invariant (Neighbor_Blocks (Get (Blocks, Idx), Get (Blocks, Idx + 1)));
+         pragma Loop_Invariant (Blocks_Addresses_Are_In_Ascending_Order (Blocks, From, Idx + 1));
+         pragma Loop_Invariant (Coverage_Is_Continuous (Space, Blocks, From, Idx + 1));
+         pragma Loop_Invariant (Blocks_Do_Not_Overlap (Space, Blocks, From, Idx + 1));
+         pragma Loop_Invariant (All_Block_Are_Uniq (Space, Blocks, From, Idx + 1));
+      end loop;
+   end Increment_Partial_Validity;
+   
+   procedure Split_Block(M               : Formal_Model;
+                         B               : Block;
+                         L_Size, R_Size  : BT.Aligned_Size;
+                         B_Left, B_Right : out Block;
+                         New_M           : out Formal_Model)
+   is
+      B_Found : Boolean := False;
+      Old_Blocks : FV_Pkg.Sequence;
+   begin
+      New_M := M;
+      pragma Assert (if not Valid_Block(M.Mem_Region, B) and Valid(M) 
+                     then not In_Model(M, B));
+      pragma Assert (Valid_Block(M.Mem_Region, B));
+      B_Left := Block'(Address => B.Address,
+                       Size    => L_Size);
+      pragma Assert (Valid_Block(New_M.Mem_Region, B_Left));
+      B_Right := Block'(Address => Next_Block_Address(B_Left),
+                        Size    => R_Size);
+      pragma Assert (Valid_Block(New_M.Mem_Region, B_Right));
+      pragma Assert (B_Left /= B and then B_Left.Address = B.Address);
+      pragma Assert (In_Model(M, B));
+      pragma Assert (if In_Model(M, B_Left) then
+                       not Blocks_Addresses_Are_In_Ascending_Order
+                         (M.Blocks, 1, Last(M.Blocks)));
+      pragma Assert (not In_Model(M, B_Left));
+      pragma Assert (Blocks_Overlap(M.Mem_Region, B, B_Right));
+      pragma Assert (if In_Model(M, B_Right) then
+                       not Blocks_Do_Not_Overlap
+                         (M.Mem_Region, M.Blocks, 1, Last(M.Blocks)));
+      pragma Assert (not In_Model(M, B_Right));
+      pragma Assert (In_Model(New_M, B));
+      pragma Assert (Valid(New_M));
+      pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+      Every_Subseq_Of_Partial_Valid_Seq_Is_Partial_Valid
+        (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks));
+      Every_Subseq_Of_Partial_Valid_Seq_Is_Partial_Valid
+        (M.Mem_Region, M.Blocks, 1, Last (M.Blocks));
+      for Idx in 1 .. Last (New_M.Blocks) loop
+         if B = Get(New_M.Blocks, Idx) then
+            pragma Assert (not Contains (New_M.Blocks, 1, Idx - 1, B));
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            pragma Assert (All_Block_Are_Uniq (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+            pragma Assert (for all I in 1 .. Last (New_M.Blocks) => 
+                             (if I /= Idx then 
+                                 Get (New_M.Blocks, I) /= B));
+            pragma Assert (if Idx > 1 then
+                              Neighbor_Blocks
+                             ( Get (New_M.Blocks, Idx - 1), B));
+            New_M.Blocks := Set (New_M.Blocks, Idx, B_Left);
+            pragma Assert (B_Left /= B);
+            pragma Assert (Get (New_M.Blocks, Idx) /= B);
+            pragma Assert (for all I in 1 .. Last (New_M.Blocks) =>  
+                             Get (New_M.Blocks, I) /= B);
+            pragma Assert (not Contains (New_M.Blocks, 1, Last(New_M.Blocks), B));
+            pragma Assert (Range_Equal (M.Blocks, New_M.Blocks, 1, Idx - 1));
+            pragma Assert (if Idx < Last (New_M.Blocks) then
+                              Get (New_M.Blocks, Last (New_M.Blocks)) =
+                             Get (M.Blocks, Last (M.Blocks))); 
+            pragma Assert (if Idx > 1 then Get (New_M.Blocks, 1) = Get (M.Blocks, 1)); 
+            Range_Equal_Preserves_Partial_Validity
+              (M.Mem_Region, New_M.Mem_Region,
+               M.Blocks, New_M.Blocks,
+               1, Idx - 1);
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx - 1));
+            
+            pragma Assert (if Idx > 1 then
+                              Neighbor_Blocks
+                             (Get (New_M.Blocks, Idx - 1), B));
+
+            pragma Assert (if Idx > 1 then
+                              Neighbor_Blocks
+                             ( Get (New_M.Blocks, Idx - 1), B_Left));
+            pragma Assert (B.Address = B_Left.Address);
+            pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (New_M.Blocks, 1, Idx));
+            pragma Assert (Coverage_Is_Continuous (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            Continuous_Coverage_Implies_Non_Overlapping
+              (New_M.Mem_Region, New_M.Blocks, 1, Idx);
+            pragma Assert (Blocks_Do_Not_Overlap (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            pragma Assert (All_Block_Are_Uniq (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            
+            pragma Assume (Idx <= Index_Type'Last - 2);
+            pragma Assert (Range_Equal (M.Blocks, New_M.Blocks, Idx + 1, Last (New_M.Blocks)));
+            Range_Equal_Preserves_Partial_Validity
+              (M.Mem_Region, New_M.Mem_Region,
+               M.Blocks, New_M.Blocks,
+               Idx + 1, Last (New_M.Blocks));
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 1, Last (New_M.Blocks)));
+
+            
+            pragma Assume (Length (New_M.Blocks) < Count_Type'Last);
+            Old_Blocks := New_M.Blocks;
+            pragma Assert (Get (New_M.Blocks, Idx) = B_Left);
+            New_M.Blocks := Add (New_M.Blocks, Idx + 1, B_Right);
+            pragma Assert (Get (New_M.Blocks, Idx) = B_Left);
+            
+            pragma Assert (if Idx < Last (Old_Blocks) then
+                              Get (New_M.Blocks, Last (New_M.Blocks)) =
+                             Get (M.Blocks, Last (M.Blocks))); 
+
+            pragma Assert (Range_Equal (Old_Blocks, New_M.Blocks, 1, Idx));
+            pragma Assert (Range_Shifted (Old_Blocks, New_M.Blocks, Idx+1, Last (Old_Blocks), 1));
+                             
+            Range_Equal_Preserves_Partial_Validity
+              (M.Mem_Region, New_M.Mem_Region,
+               Old_Blocks, New_M.Blocks,
+               1, Idx);
+
+            Range_Shifted_Preserves_Partial_Validity
+              (M.Mem_Region, New_M.Mem_Region,
+               Old_Blocks, New_M.Blocks,
+               Idx + 1, Last (Old_Blocks), 1);
+            
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+            pragma Assert (Last (New_M.Blocks) = Last (Old_Blocks) + 1);
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 2, Last (New_M.Blocks)));
+            
+            pragma Assert (Get (New_M.Blocks, Idx + 1) = B_Right);
+            pragma Assert (Get (New_M.Blocks, Idx) = B_Left);
+            pragma Assert (Neighbor_Blocks (Get (New_M.Blocks, Idx), Get (New_M.Blocks, Idx + 1)));
+            Increment_Partial_Validity (New_M.Mem_Region, New_M.Blocks, 1, Idx);
+            pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx + 1));
+            if Idx = Last (Old_Blocks) then
+               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+               pragma Assert (B_Right.Address + B_Right.Size = B.Address + B.Size);
+               pragma Assert (Boundary_Blocks_Coverage_Is_Correct (M.Mem_Region, M.Blocks));
+               pragma Assert (Get (M.Blocks, Last (M.Blocks)) = B);
+               pragma Assert (B.Address + B.Size = New_M.Mem_Region.Last);
+               pragma Assert (Get (New_M.Blocks, 1).Address = Get (M.Blocks, 1).Address);
+               pragma Assert (Boundary_Blocks_Coverage_Is_Correct(New_M.Mem_Region, New_M.Blocks));
+               pragma Assert (Valid (New_M));
+               pragma Assert (In_Model (New_M, B_Right));
+               pragma Assert (In_Model (New_M, B_Left));
+               pragma Assert (not In_Model (New_M, B));
+               null;
+            else
+               pragma Assert (Neighbor_Blocks (B_Right, Get (New_M.Blocks, Idx + 2)));
+               Increment_Partial_Validity (New_M.Mem_Region, New_M.Blocks, 1, Idx + 1);
+               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx + 2));
+               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 2, Last (New_M.Blocks)));
+               Partial_Validity_Is_Additive (New_M.Mem_Region, New_M.Blocks, 1, Idx + 2, Idx + 2, Last (New_M.Blocks));
+               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+               if Idx = 1 then
+                  pragma Assert (B_Left.Address = B.Address);
+                  pragma Assert (Get (New_M.Blocks, 1) = B_Left);
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
+                                   Get (M.Blocks, Last (M.Blocks)));
+                  pragma Assert (Boundary_Blocks_Coverage_Is_Correct (New_M.Mem_Region, New_M.Blocks));
+                  pragma Assert (Valid (New_M));
+                  pragma Assert (In_Model (New_M, B_Right));
+                  pragma Assert (In_Model (New_M, B_Left));
+                  pragma Assert (not In_Model (New_M, B));
+                  null;
+               else
+                  pragma Assert (Get (New_M.Blocks, 1) = Get (M.Blocks, 1));
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
+                                   Get (M.Blocks, Last (M.Blocks)));
+                  pragma Assert (Boundary_Blocks_Coverage_Is_Correct (New_M.Mem_Region, New_M.Blocks));
+                  pragma Assert (Valid (New_M));
+                  pragma Assert (In_Model (New_M, B_Right));
+                  pragma Assert (In_Model (New_M, B_Left));
+                  pragma Assert (not In_Model (New_M, B));
+                  null;
+               end if;
+               null;
+            end if;
+            pragma Assert (Valid(New_M));
+            pragma Assert (In_Model (New_M, B_Left));
+            pragma Assert (In_Model(New_M, B_Right));
+            exit;
+         end if;
+         pragma Loop_Invariant (not Contains(New_M.Blocks, 1, Idx, B));
+         pragma Loop_Invariant (for all I in 1..Last(New_M.Blocks) => 
+                                  (Get (New_M.Blocks, I) = Get (M.Blocks, I)));
+         pragma Loop_Invariant (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+         pragma Loop_Invariant (Range_Equal (M.Blocks, New_M.Blocks, 1, Idx));
+         pragma Loop_Invariant (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx));
+      end loop;
+      pragma Assert (not In_Model(New_M, B));
+      pragma Assert (Valid (New_M));
+   end Split_Block;
+
 end TLSF.Proof.Model.Block;

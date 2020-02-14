@@ -31,25 +31,29 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
    
    use FV_Pkg;
    
+   type Address_Space is record
+      First : BT.Aligned_Address := BT.Quantum;
+      Last  : BT.Aligned_Address := BT.Address'Last - (BT.Quantum - 1);
+   end record
+     with Predicate => 
+       First >= BT.Quantum and then
+       Last <= BT.Address'Last - (BT.Quantum - 1) and then
+     Last > First;
+   
    -- Address space of model is First_Address .. Last_Address - 1,
    -- ie Last_Address is the first one that is out of address space
    type Formal_Model is record
-      Blocks        : FV_Pkg.Sequence;
-      First_Address : BT.Aligned_Address := BT.Quantum;
-      Last_Address  : BT.Aligned_Address := BT.Address'Last - (BT.Quantum - 1);
-   end record
-     with Predicate => 
-       First_Address >= BT.Quantum and then
-       Last_Address <= BT.Address'Last - (BT.Quantum - 1) and then
-     Last_Address > First_Address;
+      Blocks     : FV_Pkg.Sequence;
+      Mem_Region : Address_Space;
+   end record;
       
-   function Valid_Block (M: Formal_Model; B: Block) return Boolean
-   is (B.Address in M.First_Address..M.Last_Address and then
+   function Valid_Block (AS: Address_Space; B: Block) return Boolean
+   is (B.Address in AS.First..AS.Last and then
        Integer(B.Address) + Integer(B.Size) in 0..Integer(BT.Address'Last) and then
-       B.Address + B.Size in M.First_Address..M.Last_Address)
+       B.Address + B.Size in AS.First..AS.Last)
      with Post => (if Valid_Block'Result = True 
-                     then B.Address in M.First_Address..M.Last_Address and
-                       B.Address + B.Size in M.First_Address..M.Last_Address);
+                     then B.Address in AS.First..AS.Last and
+                       B.Address + B.Size in AS.First..AS.Last);
    pragma Annotate (GNATprove, Inline_For_Proof, Valid_Block);
      
    function Next_Block_Address (B: Block)
@@ -65,50 +69,106 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
    pragma Annotate (GNATprove, Inline_For_Proof, Neighbor_Blocks);
 
    -- excessive, but for clarity
-   function Blocks_Addresses_Are_In_Ascending_Order(M: Formal_Model)
+   function Blocks_Addresses_Are_In_Ascending_Order(Bs : FV_Pkg.Sequence;
+                                                    From : Index_Type;
+                                                    To   : Extended_Index)
                                                     return Boolean
-   is (if Last(M.Blocks) >=2 then
-         (for all Idx in 1..Last(M.Blocks)-1 =>
-               Get(M.Blocks,Idx).Address < Get(M.Blocks, Idx+1).Address));
+   is (if To >= 1 then
+         (for all Idx in From..To-1 =>
+             Get(Bs,Idx).Address < Get(Bs, Idx+1).Address))
+   with Pre => To <= Last(Bs);
    pragma Annotate (GNATprove, Inline_For_Proof, Blocks_Addresses_Are_In_Ascending_Order);
    
-   function All_Blocks_Are_Valid (M: Formal_Model)
+   function All_Blocks_Are_Valid (AS : Address_Space;
+                                  BS : FV_Pkg.Sequence;
+                                  From : Index_Type;
+                                  To   : Extended_Index)
                                   return Boolean
-   is (for all B of M.Blocks => Valid_Block (M, B));
+   is (for all Idx in From..To => Valid_Block (AS, Get(BS, Idx)))
+     with Pre => To <= Last(BS);
    pragma Annotate (GNATprove, Inline_For_Proof, All_Blocks_Are_Valid);
    
-   function Coverage_Is_Continuous (M: Formal_Model)
+   function Boundary_Blocks_Coverage_Is_Correct(AS: Address_Space;
+                                                BS : FV_Pkg.Sequence)
+                                                return Boolean
+   is (if Last(BS) >=1
+       then 
+         (Get(BS, 1).Address = AS.First
+          and Next_Block_Address(Get(BS, Last(BS))) = AS.Last))
+       with 
+         Pre => All_Blocks_Are_Valid(AS, BS, 1, Last(BS));
+   
+   function Coverage_Is_Continuous (AS : Address_Space;
+                                    BS : FV_Pkg.Sequence;
+                                    From : Index_Type;
+                                    To   : Extended_Index)
                                     return Boolean
-   is ((if Last(M.Blocks) >=1
-        then 
-          (Get(M.Blocks, 1).Address = M.First_Address
-           and Next_Block_Address(Get(M.Blocks, Last(M.Blocks))) = M.Last_Address))
-       and then
-         (if Last(M.Blocks) > 1
-          then (for all Idx in 1 .. Last(M.Blocks)-1
-                => Neighbor_Blocks(Get(M.Blocks, Idx), Get(M.Blocks, Idx+1)))))
-   with Pre=> All_Blocks_Are_Valid(M);
+   is (if To >= 1
+       then (for all Idx in From .. To-1
+             => Neighbor_Blocks(Get(BS, Idx), Get(BS, Idx+1))))
+     with Pre => To <= Last(BS) 
+     and then All_Blocks_Are_Valid(AS, BS, From, To);
    pragma Annotate (GNATprove, Inline_For_Proof, Coverage_Is_Continuous);
    
+   function Blocks_Overlap (AS: Address_Space; B1, B2: Block) return Boolean
+   is (B1.Address in B2.Address..(B2.Address + B2.Size - 1)
+       or B1.Address + B1.Size -1 in B2.Address..(B2.Address + B2.Size - 1)
+       or B2.Address in B1.Address..(B1.Address + B1.Size - 1)
+       or B2.Address + B2.Size -1 in B1.Address..(B1.Address + B1.Size - 1))
+   with Pre => Valid_Block(AS, B1) and Valid_Block(AS, B2);
+   pragma Annotate (GNATprove, Inline_For_Proof, Blocks_Overlap);
+   
+   function Blocks_Do_Not_Overlap (AS : Address_Space;
+                                   BS : FV_Pkg.Sequence;
+                                   From : Index_Type;
+                                   To   : Extended_Index)
+                                   return Boolean
+   is (for all Idx1 in From..To =>
+         (for all Idx2 in From..To => 
+            (if Idx1 /= Idx2 
+             then not Blocks_Overlap(AS, Get(BS, Idx1), Get(BS, Idx2)))))
+       with Pre => To <= Last(BS)
+       and then All_Blocks_Are_Valid(AS, BS, From, To);
+   pragma Annotate (GNATprove, Inline_For_Proof, Blocks_Do_Not_Overlap);
+   
+   function All_Block_Are_Uniq (AS : Address_Space;
+                                BS : FV_Pkg.Sequence;
+                                From : Index_Type;
+                                To   : Extended_Index)
+                                return Boolean
+   is (for all Idx1 in From..To => 
+         (for all Idx2 in From..To =>
+              (if Get(BS, Idx1) = Get(BS, Idx2) then Idx1 = Idx2)))
+       with Pre => To <= Last(BS)
+     and then All_Blocks_Are_Valid(AS, BS, From, To);
+   pragma Annotate (GNATprove, Inline_For_Proof, All_Block_Are_Uniq);
+   
+   function Partial_Valid(AS: Address_Space; BS: FV_Pkg.Sequence;
+                          From : Index_Type; To : Extended_Index)
+                          return Boolean
+   is (All_Blocks_Are_Valid(AS, BS, From, To)
+       and then Blocks_Addresses_Are_In_Ascending_Order(BS, From, To)
+       and then Coverage_Is_Continuous(AS, BS, From, To)
+       and then Blocks_Do_Not_Overlap(AS, BS, From, To)
+       and then All_Block_Are_Uniq(AS, BS, From, To))
+     with Global => null,
+     Depends => (Partial_Valid'Result => (AS, BS, From, To)),
+     Pre => To <= Last(BS),
+     Pure_Function;
+   
    function Valid(M : Formal_Model) return Boolean
+   is (Partial_Valid(M.Mem_Region, M.Blocks, 1, Last(M.Blocks))
+       and then Boundary_Blocks_Coverage_Is_Correct(M.Mem_Region, M.Blocks))
+     with Global => null,
+       Depends => (Valid'Result => M),
+     Pure_Function;
+   
+   function In_Model(M: Formal_Model; B : Block) return Boolean
+   is (Contains(M.Blocks, 1, Last(M.Blocks), B))
      with Global => null,
      Pure_Function,
-     Contract_Cases =>
-       ((All_Blocks_Are_Valid(M)
-        and then Blocks_Addresses_Are_In_Ascending_Order(M)
-        and then Coverage_Is_Continuous(M))
-        => Valid'Result = True,
-        
-        others => Valid'Result = False);      
-         
-   function In_Model(M: Formal_Model; B : Block)
-                     return Boolean
-     with Global => null,
-     Pure_Function,
-     Contract_Cases =>
-       ( Contains(M.Blocks, 1, Last(M.Blocks), B) => In_Model'Result = True,
-         others                                    => In_Model'Result = False);
-     
+     Pre => Valid(M);
+   
    function Init_Model(First_Address: BT.Aligned_Address;
                        Size         : BT.Aligned_Size)
                        return Formal_Model
@@ -117,12 +177,12 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
      and Size >= Small_Block_Size
      and First_Address >= BT.Quantum, 
        Post => Length(Init_Model'Result.Blocks) = 1
-     and Init_Model'Result.First_Address = First_Address
-     and Init_Model'Result.Last_Address = First_Address + Size
+     and Init_Model'Result.Mem_Region.First = First_Address
+     and Init_Model'Result.Mem_Region.Last = First_Address + Size
      and Get(Init_Model'Result.Blocks, 1).Address = First_Address
      and Get(Init_Model'Result.Blocks, 1).Size = Size
      and Next_Block_Address(Get(Init_Model'Result.Blocks, 1))
-       = Init_Model'Result.Last_Address
+       = Init_Model'Result.Mem_Region.Last
      and In_Model(Init_Model'Result, Block'(First_Address, Size))
      and Valid(Init_Model'Result);
    
@@ -147,12 +207,11 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
      with
        Global => null,
        Pure_Function,
-       Pre => Valid(M)
-     and Length(M.Blocks) > 0
-     and not Is_First_Block(M, B)
-     and In_Model(M, B),
+       Pre => (Valid(M)
+               and not Is_First_Block(M, B))
+       and then In_Model(M, B),
      Post =>
-       Valid_Block(M, Get_Prev'Result)
+       Valid_Block(M.Mem_Region, Get_Prev'Result)
      and In_Model(M, Get_Prev'Result)
      and Neighbor_Blocks(Get_Prev'Result, B);
    
@@ -160,27 +219,41 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
      with
        Global => null,
        Pure_Function,
-       Pre => Valid(M)
-     and Length (M.Blocks) > 0
-     and not Is_Last_Block(M, B)
-     and In_Model(M, B),
+       Pre => (Valid(M)
+               and not Is_Last_Block(M, B))
+       and then In_Model(M, B),
      Post =>
-       Valid_Block(M, Get_Next'Result)
+       Valid_Block(M.Mem_Region, Get_Next'Result)
      and In_Model(M, Get_Next'Result)
      and Neighbor_Blocks(B, Get_Next'Result);
    
---     function Split_Block(M : Formal_Model;
---                          B : Block;
---                          L_Size, R_Size : BT.Aligned_Size;
---                          B_Left, B_Right : out Block)
---                          return Formal_Model
---       with 
---         Global => null,
---         Pure_Function,
---         Pre => 
---           Valid(M)
---       and In_Model(M, B)
---       and B.SIze = L_Size + R_Size,
---       Post => 
+   procedure Split_Block(M : Formal_Model;
+                         B : Block;
+                         L_Size, R_Size : BT.Aligned_Size;
+                         B_Left, B_Right : out Block;
+                         New_M           : out Formal_Model)
+     with 
+       Global => null,
+       Depends => (New_M => (M, B, L_Size, R_Size),
+                   B_Left => (B, L_Size),
+                   B_Right => (B, L_Size, R_Size)),
+       Pre => 
+         (Valid(M)
+          and then In_Model(M, B))
+     and L_Size >= Small_Block_Size
+     and R_Size >= Small_Block_Size
+     and B.SIze = L_Size + R_Size,
+     Post =>
+       (Valid(New_M)
+     and not In_Model(New_M, B)
+     and In_Model(New_M, B_Left)
+     and In_Model(New_M, B_Right)
+     and Neighbor_Blocks(B_Left, B_Right)
+     and Is_First_Block(M, B) = Is_First_Block(New_M, B_Left)
+     and Is_Last_Block(M, B) = Is_Last_Block(New_M, B_Right))
+     and then (if not Is_First_Block(M, B)
+                   then Get_Prev(M, B) = Get_Prev(New_M, B_Left))
+     and then (if not Is_Last_Block(M, B)
+                   then Get_Next(M, B) = Get_Next(New_M, B_Right));
    
 end TLSF.Proof.Model.Block;
