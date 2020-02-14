@@ -81,8 +81,8 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
        Is_Aligned("+"'Result)
        and "+"'Result = Aligned_Address(Integer(A) + Integer(S));
    
-   type Status is (Free, Occupied, Absent)
-     with Size => 2;
+   type Status is (Free, Occupied)
+     with Size => 1;
    -- Free: block is free
    -- Occupied: block in use
    -- Absent: block is absent (previous of the first
@@ -100,14 +100,10 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
    type Block_Header (Status : Types.Status := Free) is
       record
          Prev_Block_Address : Aligned_Address := Address_Null;
-         Prev_Block_Status  : Types.Status := Absent;
-         Next_Block_Status  : Types.Status := Absent;
          Size               : Aligned_Size := 0;
          case Status is
-            when Free   =>
-               Free_List : Free_Blocks_List;
-            when Occupied |
-                 Absent => null;
+            when Free     => Free_List : Free_Blocks_List;
+            when Occupied => null;
          end case;
       end record
      with Pack;
@@ -137,12 +133,6 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
                                 return Boolean
    is (Free_List.Prev_Address = 0 and then 
        Free_List.Next_Address = 0);
---       with
---         Contract_Cases => 
---           ( Free_List = Empty_Free_List => 
---               Is_Free_List_Empty'Result = True,
---             others                      =>
---               Is_Free_List_Empty'Result = False);
    
    function Is_Block_Free (Block : Block_Header) return Boolean
      is (Block.Status = Free);
@@ -182,8 +172,6 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
      (Is_Block_Free(Block_Old) and then
       Is_Block_Free(Block_New) and then
       Block_New.Prev_Block_Address = Block_Old.Prev_Block_Address and then
-      Block_New.Prev_Block_Status = Block_Old.Prev_Block_Status and then
-      Block_New.Next_Block_Status = Block_Old.Next_Block_Status and then
       Block_New.Size = Block_Old.Size);
    
    -- Calculation of levels
@@ -218,8 +206,6 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
                 Is_Same_Size_Class'Result = True,
             others                                  =>
               Is_Same_Size_Class'Result = False);
-   
-     
-   
+      
 end TLSF.Block.Types;
 
