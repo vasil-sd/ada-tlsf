@@ -68,7 +68,7 @@ library project Bits is
    end Builder;
    
    package Prove is
-       for Proof_Dir use "./proof";
+       for Proof_Dir use "../proof";
    end Prove;
    
 end Bits;

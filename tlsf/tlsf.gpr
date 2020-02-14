@@ -18,13 +18,17 @@ project TLSF is
       for Switches ("ada") use ("-g");
    end Builder;
 
-   package Prove is
-      for Proof_Dir use "../bits/proof";
-   end Prove;
-
    package Ide is
       for Vcs_Kind use "git";
    end Ide;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-nM", "--no-separate-loop-then", "-W8");
+   end Pretty_Printer;
+
+   package Prove is
+      for Proof_Dir use "../proof";
+   end Prove;
 
 end TLSF;
 
