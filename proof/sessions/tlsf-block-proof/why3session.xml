@@ -1,0 +1,3272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="260000" memlimit="0"/>
+<prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="260000" memlimit="0"/>
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="tlsf"/>
+<path name="obj"/>
+<path name="gnatprove"/>
+<path name="tlsf-block-proof.mlw"/>
+<theory name="Tlsf__block__proof__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__hash__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__map__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__map__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__private_key__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__iter_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__has_key__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__has_witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__w_get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__keys_included__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__same_keys__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__keys_included_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__keys_included_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__elements_equal_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__elements_equal_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__m__set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__sequence__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__last__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__Olt__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__contains__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__constant_range__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__equal_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__equal_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__range_equal__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__range_shifted__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="19"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__add__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__remove__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__find__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__k_keys_included__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__map__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__private_key__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__iter_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__has_key__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__has_witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__w_get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__keys_included__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__same_keys__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__keys_included_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__keys_included_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__elements_equal_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__elements_equal_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__p__set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__mapping_preserved__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__model__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__keys__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__positions__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__formal_model__lift_abstraction_level__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__capacity__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__reserve_capacity__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__clear__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__assign__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__copy__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__key__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__replace_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__move__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__contains__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__insert__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__find__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__insert__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__element__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__include__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="precondition">
+  </goal>
+  <goal name="VC def.24" expl="postcondition">
+  </goal>
+  <goal name="VC def.25" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__replace__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__exclude__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__delete__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="precondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition">
+  </goal>
+  <goal name="VC def.12" expl="precondition">
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="precondition">
+  </goal>
+  <goal name="VC def.15" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__delete__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="postcondition">
+  </goal>
+  <goal name="VC def.18" expl="precondition">
+  </goal>
+  <goal name="VC def.19" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__next__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_map__default_modulus__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__set__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__set__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__private_key__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__iter_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__contains__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__included_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__includes_intersection__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__included_in_union__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__is_singleton__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__not_in_both__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__no_overlap__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__intersection__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__num_overlaps__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__remove__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__m__union__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__sequence__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__last__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__Olt__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__contains__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__constant_range__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__equal_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__equal_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__range_equal__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__range_shifted__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="19"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__add__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__remove__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__find__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e_elements_included__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e_elements_included__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__e_elements_included__3__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__map__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__private_key__default_checks">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__iter_first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__iter_has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__iter_next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__iter_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__has_key__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__has_witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__witness__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__w_get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__get__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__length__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__Ole__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__keys_included__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__same_keys__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__keys_included_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__keys_included_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__elements_equal_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__elements_equal_except__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__add__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__p__set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__mapping_preserved__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__mapping_preserved_except__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__model__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__elements__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__positions__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__formal_model__lift_abstraction_level__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__Oeq__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__equivalent_sets__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__to_set__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__capacity__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__reserve_capacity__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__is_empty__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__clear__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__assign__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__copy__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__has_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__replace_element__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="precondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition">
+  </goal>
+  <goal name="VC def.12" expl="precondition">
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="precondition">
+  </goal>
+  <goal name="VC def.15" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__move__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__contains__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__insert__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__find__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__insert__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__include__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__replace__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__exclude__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__delete__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="precondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition">
+  </goal>
+  <goal name="VC def.12" expl="precondition">
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="precondition">
+  </goal>
+  <goal name="VC def.15" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__delete__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="precondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition">
+  </goal>
+  <goal name="VC def.12" expl="precondition">
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="postcondition">
+  </goal>
+  <goal name="VC def.18" expl="precondition">
+  </goal>
+  <goal name="VC def.19" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__intersection__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__union__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="710"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="21"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="precondition">
+  </goal>
+  <goal name="VC def.18" expl="postcondition">
+  </goal>
+  <goal name="VC def.19" expl="precondition">
+  </goal>
+  <goal name="VC def.20" expl="postcondition">
+  </goal>
+  <goal name="VC def.21" expl="precondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  </goal>
+  <goal name="VC def.23" expl="precondition">
+  </goal>
+  <goal name="VC def.24" expl="postcondition">
+  </goal>
+  <goal name="VC def.25" expl="precondition">
+  </goal>
+  <goal name="VC def.26" expl="postcondition">
+  </goal>
+  <goal name="VC def.27" expl="precondition">
+  </goal>
+  <goal name="VC def.28" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__union__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__intersection__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__difference__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition">
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="precondition">
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="precondition">
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__difference__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__symmetric_difference__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="719"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="852"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="20"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="precondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition">
+  </goal>
+  <goal name="VC def.12" expl="precondition">
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="precondition">
+  </goal>
+  <goal name="VC def.15" expl="postcondition">
+  </goal>
+  <goal name="VC def.16" expl="precondition">
+  </goal>
+  <goal name="VC def.17" expl="postcondition">
+  </goal>
+  <goal name="VC def.18" expl="precondition">
+  </goal>
+  <goal name="VC def.19" expl="postcondition">
+  </goal>
+  <goal name="VC def.20" expl="precondition">
+  </goal>
+  <goal name="VC def.21" expl="postcondition">
+  </goal>
+  <goal name="VC def.22" expl="precondition">
+  </goal>
+  <goal name="VC def.23" expl="postcondition">
+  </goal>
+  <goal name="VC def.24" expl="precondition">
+  </goal>
+  <goal name="VC def.25" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__symmetric_difference__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__overlap__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__is_subset__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__first__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__next__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__next__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__free_blocks_set__default_modulus__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_present_at_address__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.13" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__block_at_address__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="701"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="762"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__specific_block_present_at_address__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.10" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="VC def.11" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="14"/></proof>
+  </goal>
+  <goal name="VC def.14" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.15" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__put_block_at_address__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="260014"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="260013"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition">
+  </goal>
+  <goal name="VC def.9" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.10" expl="postcondition">
+  </goal>
+  <goal name="VC def.11" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="933"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="1156"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__remove_block_at_address__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="800"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="precondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="722"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__get_free_list__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__get_free_list__2__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__get_free_list__3__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="23125"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__is_block_present_in_free_lists__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  </goal>
+  <goal name="VC def.10" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.11" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="979"/></proof>
+  <proof prover="1"><result status="unknown" steps="859"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.13" expl="postcondition">
+  </goal>
+  <goal name="VC def.14" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="956"/></proof>
+  <proof prover="1"><result status="unknown" steps="845"/></proof>
+  </goal>
+  <goal name="VC def.15" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.16" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__is_block_in_free_list_for_size__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="23836"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.10" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5191"/></proof>
+  </goal>
+  <goal name="VC def.11" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="postcondition">
+  </goal>
+  <goal name="VC def.13" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5191"/></proof>
+  </goal>
+  <goal name="VC def.14" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.15" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__is_block_present_in_exactly_one_free_list_for_size__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="23836"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__remove_block_from_free_list_for_size__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="24724"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="18010"/></proof>
+  <proof prover="1"><result status="unknown" steps="22859"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="114516"/></proof>
+  <proof prover="1"><result status="unknown" steps="24462"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__proof__put_block_in_free_list_for_size__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="24724"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition">
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="17926"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  </goal>
+  <goal name="VC def.9" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="260013"/></proof>
+  <proof prover="1"><result status="unknown" steps="31388"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>
