@@ -4,7 +4,7 @@ with Ada.Containers.Functional_Vectors;
 with TLSF.Block.Types;
 with TLSF.Config; use TLSF.Config;
 
-package TLSF.Proof.Model.Block with SPARK_Mode is
+package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
 
    package BT renames TLSF.Block.Types;
    
@@ -30,15 +30,10 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
       Element_Type => Block);
    
    use FV_Pkg;
+
    
-   type Address_Space is record
-      First : BT.Aligned_Address := BT.Quantum;
-      Last  : BT.Aligned_Address := BT.Address'Last - (BT.Quantum - 1);
-   end record
-     with Predicate => 
-       First >= BT.Quantum and then
-       Last <= BT.Address'Last - (BT.Quantum - 1) and then
-     Last > First;
+   use type BT.Address_Space;
+   subtype Address_Space is BT.Address_Space;
    
    -- Address space of model is First_Address .. Last_Address - 1,
    -- ie Last_Address is the first one that is out of address space
@@ -163,97 +158,116 @@ package TLSF.Proof.Model.Block with SPARK_Mode is
        Depends => (Valid'Result => M),
      Pure_Function;
    
+   procedure Equality_Preserves_Validity (Old_M, New_M : Formal_Model)
+     with Global => null,
+     Pre => Valid (Old_M) and Old_M = New_M,
+     Post => Valid (New_M);
+   
    function In_Model(M: Formal_Model; B : Block) return Boolean
    is (Contains(M.Blocks, 1, Last(M.Blocks), B))
      with Global => null,
      Pure_Function,
      Pre => Valid(M);
    
-   function Init_Model(First_Address: BT.Aligned_Address;
-                       Size         : BT.Aligned_Size)
-                       return Formal_Model
-     with
-       Pre => Integer(First_Address) + Integer(Size) in 0 .. Integer(BT.Address'Last) - Integer(BT.Quantum) + 1
-     and Size >= Small_Block_Size
-     and First_Address >= BT.Quantum, 
-       Post => Length(Init_Model'Result.Blocks) = 1
-     and Init_Model'Result.Mem_Region.First = First_Address
-     and Init_Model'Result.Mem_Region.Last = First_Address + Size
-     and Get(Init_Model'Result.Blocks, 1).Address = First_Address
-     and Get(Init_Model'Result.Blocks, 1).Size = Size
-     and Next_Block_Address(Get(Init_Model'Result.Blocks, 1))
-       = Init_Model'Result.Mem_Region.Last
-     and In_Model(Init_Model'Result, Block'(First_Address, Size))
-     and Valid(Init_Model'Result);
-   
    function Is_First_Block(M: Formal_Model; B: Block) return Boolean
      with 
        Global => null,
        Pure_Function,
-       Contract_Cases => 
-         (Length(M.Blocks) > 0 and then B = Get(M.Blocks, 1) => Is_First_Block'Result = True,
-          others                                             => Is_First_Block'Result = False);
+       Pre => Valid (M) and then In_Model (M, B),
+     Post => (if B.Address = M.Mem_Region.First
+                then B = Get (M.Blocks, 1) and 
+                  Is_First_Block'Result = True
+                    else Is_First_Block'Result = False);
    
    function Is_Last_Block(M: Formal_Model; B: Block) return Boolean
      with
        Global => null,
        Pure_Function,
-       Contract_Cases =>
-         (Length(M.Blocks) > 0 and then B = Get(M.Blocks, Last(M.Blocks))
-          => Is_Last_Block'Result = True,
-          others => Is_Last_Block'Result = False);
+       Pre => Valid (M) and then In_Model (M, B),
+     Post => (if Next_Block_Address (B) = M.Mem_Region.Last
+                  then B = Get (M.Blocks, Last (M.Blocks)) and
+                Is_Last_Block'Result = True
+                  else Is_Last_Block'Result = False);
 
    function Get_Prev(M: Formal_Model; B: Block) return Block
      with
        Global => null,
        Pure_Function,
-       Pre => (Valid(M)
-               and not Is_First_Block(M, B))
-       and then In_Model(M, B),
+       Pre => 
+         Valid (M)
+     and then In_Model (M, B)
+     and then not Is_First_Block (M, B),
      Post =>
-       Valid_Block(M.Mem_Region, Get_Prev'Result)
-     and In_Model(M, Get_Prev'Result)
-     and Neighbor_Blocks(Get_Prev'Result, B);
+       Valid_Block (M.Mem_Region, Get_Prev'Result)
+     and In_Model (M, Get_Prev'Result)
+     and Neighbor_Blocks (Get_Prev'Result, B);
    
    function Get_Next(M: Formal_Model; B: Block) return Block
      with
        Global => null,
        Pure_Function,
-       Pre => (Valid(M)
-               and not Is_Last_Block(M, B))
-       and then In_Model(M, B),
+       Pre => Valid (M)
+     and then In_Model (M, B)
+     and then not Is_Last_Block (M, B),
      Post =>
        Valid_Block(M.Mem_Region, Get_Next'Result)
      and In_Model(M, Get_Next'Result)
      and Neighbor_Blocks(B, Get_Next'Result);
+
+   function Initial_Block (Space : Address_Space)
+                           return Block
+     with Post =>
+       Valid_Block (Space, Initial_Block'Result) and then
+     Initial_Block'Result.Address = Space.First and then 
+     Next_Block_Address (Initial_Block'Result) = Space.Last;
    
-   procedure Split_Block(M : Formal_Model;
-                         B : Block;
-                         L_Size, R_Size : BT.Aligned_Size;
-                         B_Left, B_Right : out Block;
-                         New_M           : out Formal_Model)
+   function Init_Model(Space : Address_Space)
+                       return Formal_Model
+     with 
+       Post => Length(Init_Model'Result.Blocks) = 1
+     and then Init_Model'Result.Mem_Region = Space
+     and then Get (Init_Model'Result.Blocks, 1).Address
+     = Init_Model'Result.Mem_Region.First
+     and then Next_Block_Address (Get (Init_Model'Result.Blocks, 1))
+       = Init_Model'Result.Mem_Region.Last
+     and then Get (Init_Model'Result.Blocks, 1) = Initial_Block (Space)
+     and then Valid (Init_Model'Result)
+     and then In_Model (Init_Model'Result, Initial_Block (Space))
+     and then Is_Last_Block (Init_Model'Result, Initial_Block (Space))
+     and then Is_First_Block (Init_Model'Result, Initial_Block (Space));
+   
+   
+   procedure Split_Block (M               : Formal_Model;
+                          B               : Block;
+                          L_Size, R_Size  : BT.Aligned_Size;
+                          B_Left, B_Right : out Block;
+                          New_M           : out Formal_Model)
      with 
        Global => null,
        Depends => (New_M => (M, B, L_Size, R_Size),
                    B_Left => (B, L_Size),
                    B_Right => (B, L_Size, R_Size)),
        Pre => 
-         (Valid(M)
-          and then In_Model(M, B))
-     and L_Size >= Small_Block_Size
-     and R_Size >= Small_Block_Size
-     and B.SIze = L_Size + R_Size,
-     Post =>
-       (Valid(New_M)
-     and not In_Model(New_M, B)
-     and In_Model(New_M, B_Left)
-     and In_Model(New_M, B_Right)
-     and Neighbor_Blocks(B_Left, B_Right)
-     and Is_First_Block(M, B) = Is_First_Block(New_M, B_Left)
-     and Is_Last_Block(M, B) = Is_Last_Block(New_M, B_Right))
-     and then (if not Is_First_Block(M, B)
-                   then Get_Prev(M, B) = Get_Prev(New_M, B_Left))
-     and then (if not Is_Last_Block(M, B)
-                   then Get_Next(M, B) = Get_Next(New_M, B_Right));
+         (Valid (M)
+          and then In_Model (M, B))
+         and L_Size >= Small_Block_Size
+         and R_Size >= Small_Block_Size
+         and B.SIze = L_Size + R_Size,
+         Post =>
+           (Valid (New_M)
+            and not In_Model (New_M, B)
+            and In_Model (New_M, B_Left)
+            and In_Model (New_M, B_Right)
+            and B_Left.Address = B.Address
+            and B_Left.Size = L_Size
+            and B_Right.Address = B.Address + L_Size
+            and B_Right.Size = R_Size
+            and Neighbor_Blocks (B_Left, B_Right)
+            and Is_First_Block (M, B) = Is_First_Block (New_M, B_Left)
+            and Is_Last_Block (M, B) = Is_Last_Block (New_M, B_Right))
+           and then (if not Is_First_Block (M, B)
+                               then Get_Prev (M, B) = Get_Prev (New_M, B_Left))
+           and then (if not Is_Last_Block (M, B)
+                               then Get_Next (M, B) = Get_Next (New_M, B_Right));
    
 end TLSF.Proof.Model.Block;

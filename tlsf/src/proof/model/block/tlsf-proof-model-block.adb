@@ -1,28 +1,36 @@
 package body TLSF.Proof.Model.Block with SPARK_Mode is
   
-   function Init_Model(First_Address: BT.Aligned_Address;
-                       Size         : BT.Aligned_Size)
+   function Initial_Block (Space : Address_Space)
+                           return Block is
+      pragma Assert (Space.Last > Space.First);
+      Size : BT.Aligned_Size := Space.Last - Space.First;
+      B    : Block := (Space.First, Size);
+   begin
+      pragma Assert (Valid_Block (Space, B));
+      pragma Assert (Next_Block_Address(B) = Space.Last);
+      return B;
+   end Initial_Block;
+   
+   
+   function Init_Model(Space : Address_Space)
                        return Formal_Model
    is
+      B     : Block := Initial_Block (Space);
       Model : Formal_Model;
-      B     : Block := (Address => First_Address, Size => Size);
    begin
-      pragma Assert (Integer(First_Address) + Integer(Size) in 0 .. Integer(BT.Address'Last));
-      pragma Assert (First_Address + Size > First_Address);
-      Model.Mem_Region := Address_Space'(First => First_Address,
-                                         Last  => First_Address + Size);
-      pragma Assert (B.Address in Model.Mem_Region.First..Model.Mem_Region.Last);
-      pragma Assert (Integer(B.Address) + Integer(B.Size) in 0..Integer(BT.Address'Last));
-      pragma Assert (B.Address + B.Size in Model.Mem_Region.First..Model.Mem_Region.Last);
-      pragma Assert(Valid_Block(Model.Mem_Region, B));
+      Model.Mem_Region := Space;
       Model.Blocks := Add(Model.Blocks, B);
-      pragma Assert (Valid_Block(Model.Mem_Region, Get(Model.Blocks,1)));
       return Model;
    end Init_Model;
    
    function Is_First_Block(M: Formal_Model; B: Block) return Boolean is
    begin
-      if Length(M.Blocks) > 0 and then Get(M.Blocks, 1) = B then
+      if B.Address = M.Mem_Region.First then
+         pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (M.Blocks, 1, Last (M.Blocks)));
+         pragma Assert (All_Block_Are_Uniq (M.Mem_Region, M.Blocks, 1, Last (M.Blocks)));
+         pragma Assert (for some Blk of M.Blocks => Blk = B);
+         pragma Assert (Get (M.Blocks, 1).Address = B.Address);
+         pragma Assert (if Get (M.Blocks, 1) /= B then not Valid (M));
          return True;
       end if;
       return False;
@@ -31,7 +39,12 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
    
    function Is_Last_Block(M: Formal_Model; B: Block) return Boolean is
    begin
-      if Length(M.Blocks) > 0 and then Get(M.Blocks, Last(M.Blocks)) = B then
+      if Next_Block_Address(B) = M.Mem_Region.Last then
+         pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (M.Blocks, 1, Last (M.Blocks)));
+         pragma Assert (All_Block_Are_Uniq (M.Mem_Region, M.Blocks, 1, Last (M.Blocks)));
+         pragma Assert (for some Blk of M.Blocks => Blk = B);
+         pragma Assert (Get (M.Blocks, Last(M.Blocks)) = B);
+         pragma Assert (if Get (M.Blocks, Last (M.Blocks)) /= B then not Valid (M));
          return True;
       end if;
       return False;
@@ -356,6 +369,14 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
          pragma Loop_Invariant (All_Block_Are_Uniq (Space, Blocks, From, Idx + 1));
       end loop;
    end Increment_Partial_Validity;
+   
+   procedure Equality_Preserves_Validity (Old_M, New_M : Formal_Model)
+   is
+   begin
+      pragma Assert (Old_M = New_M);
+      pragma Assert (Valid (New_M));
+      null;
+   end Equality_Preserves_Validity;
    
    procedure Split_Block(M               : Formal_Model;
                          B               : Block;

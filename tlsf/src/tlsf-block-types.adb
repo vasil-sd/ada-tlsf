@@ -116,6 +116,18 @@ package body TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
       return Result;
    end "+";
 
+   function "-" (To, From : Aligned_Address) return Aligned_Size
+   is
+      Sz : constant Natural := Natural(To) - Natural(From);
+      pragma Assert (Sz in 0.. Natural(Size'Last));
+      -- TODO add lemma:
+      -- Aligned + Aligned = Aligned
+      -- or more common case: preservation of aligment by +,-,* operations
+      pragma Assume (Is_Aligned(Size(Sz)));
+      Result : constant Aligned_Size := Size(Sz);
+   begin
+      return Result;
+   end "-";
 
    function Calculate_Levels_Indices
      (S : Size_Bits)

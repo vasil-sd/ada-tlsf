@@ -80,6 +80,26 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
      Post => 
        Is_Aligned("+"'Result)
        and "+"'Result = Aligned_Address(Integer(A) + Integer(S));
+
+   -- To is not inclusive, ie [From, To)
+   function "-" (To, From : Aligned_Address) return Aligned_Size
+     with
+       Global => null,
+       Pure_Function,
+       Pre => To >= From,
+       Post => Is_Aligned ("-"'Result)
+     and "-"'Result = Aligned_Size (Integer (To) - Integer (From));
+     
+   
+   -- address space for blocks
+   type Address_Space is record
+      First : Aligned_Address := Quantum;
+      Last  : Aligned_Address := Address'Last - (Quantum - 1);
+   end record
+     with Predicate => 
+       First >= Quantum and then
+       Last <= Address'Last - (Quantum - 1) and then
+     Last > First;
    
    type Status is (Free, Occupied)
      with Size => 1;
@@ -131,8 +151,7 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
    
    function Is_Free_List_Empty (Free_List : Free_Blocks_List)
                                 return Boolean
-   is (Free_List.Prev_Address = 0 and then 
-       Free_List.Next_Address = 0);
+   is (Free_List = Empty_Free_List);
    
    function Is_Block_Free (Block : Block_Header) return Boolean
      is (Block.Status = Free);
@@ -140,11 +159,11 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
    function Is_Block_Occupied (Block : Block_Header) return Boolean
      is (Block.Status = Occupied);
    
-   function Is_Block_Linked_To_Free_List (Block : Block_Header) return Boolean
+   function Is_Block_Linked_To_Free_List (Block : Block_Header_Free) return Boolean
    is (Block.Free_List.Prev_Address /= Address_Null and then 
        Block.Free_List.Next_Address /= Address_Null)
-     with Pre => Is_Block_Free(Block),
-     Post => (if not Is_Free_List_Empty(Block.Free_List)
+     with Pre => Is_Block_Free (Block),
+     Post => (if not Is_Free_List_Empty (Block.Free_List)
                   then Is_Block_Linked_To_Free_List'Result = True
                     else Is_Block_Linked_To_Free_List'Result = False);
 --       Contract_Cases => (not Is_Free_List_Empty(Block.Free_List)
