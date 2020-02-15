@@ -1,6 +1,6 @@
 with System.Storage_Elements;
 
-package body TLSF.Block.Operations with SPARK_Mode is
+package body TLSF.Block.Operations_Old with SPARK_Mode is
                  
    package SSE renames System.Storage_Elements;
 
@@ -121,4 +121,4 @@ package body TLSF.Block.Operations with SPARK_Mode is
       Set_Block_At_Address(Base, Address, Block);
    end Unlink_From_Free_List;
 
-end TLSF.Block.Operations;
+end TLSF.Block.Operations_Old;

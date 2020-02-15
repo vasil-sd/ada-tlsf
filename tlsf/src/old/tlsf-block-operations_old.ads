@@ -3,7 +3,7 @@ with TLSF.Config; use TLSF.Config;
 with TLSF.Block.Types; use TLSF.Block.Types;
 with TLSF.Block.Proof;
 
-package TLSF.Block.Operations with SPARK_Mode is
+package TLSF.Block.Operations_Old with SPARK_Mode is
    
    package Proof renames TLSF.Block.Proof;
    
@@ -242,4 +242,4 @@ package TLSF.Block.Operations with SPARK_Mode is
 --     -- everything the same, except free list links
 --       Changed_Only_Links_For_Free_List(Block, Block'Old);
    
-end TLSF.Block.Operations;
+end TLSF.Block.Operations_Old;
