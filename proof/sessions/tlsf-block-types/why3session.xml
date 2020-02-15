@@ -313,7 +313,58 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tlsf__block__types__aligned_sizePredicate__subprogram_def">
+<theory name="Tlsf__block__types__Osubtract__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="668"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  </goal>
+  <goal name="VC def.3" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="158"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="669"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="351"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  </goal>
+  <goal name="VC def.8" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="352"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="352"/></proof>
+  </goal>
+  <goal name="VC def.10" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="169"/></proof>
+  </goal>
+  <goal name="VC def.11" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="173"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="174"/></proof>
+  </goal>
+  <goal name="VC def.13" expl="precondition">
+  </goal>
+  <goal name="VC def.14" expl="postcondition">
+  </goal>
+  <goal name="VC def.15" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="173"/></proof>
+  </goal>
+  <goal name="VC def.16" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="173"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__types__aligned_addressPredicate__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition">
@@ -325,7 +376,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tlsf__block__types__aligned_addressPredicate__subprogram_def">
+<theory name="Tlsf__block__types__aligned_sizePredicate__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition">
@@ -385,29 +436,29 @@
   <goal name="VC def.1" expl="postcondition">
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="435"/></proof>
+  <proof prover="0"><result status="valid" steps="492"/></proof>
   </goal>
   <goal name="VC def.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="443"/></proof>
+  <proof prover="0"><result status="valid" steps="500"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="441"/></proof>
+  <proof prover="0"><result status="valid" steps="499"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
   <goal name="VC def.6" expl="postcondition">
   </goal>
   <goal name="VC def.7" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="195"/></proof>
+  <proof prover="0"><result status="valid" steps="224"/></proof>
   </goal>
   <goal name="VC def.8" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="791"/></proof>
+  <proof prover="0"><result status="valid" steps="862"/></proof>
   </goal>
   <goal name="VC def.9" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="449"/></proof>
+  <proof prover="0"><result status="valid" steps="506"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="195"/></proof>
+  <proof prover="0"><result status="valid" steps="224"/></proof>
   </goal>
  </transf>
  </goal>
@@ -429,10 +480,10 @@
   <proof prover="0"><result status="valid" steps="447"/></proof>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="449"/></proof>
+  <proof prover="0"><result status="valid" steps="450"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="449"/></proof>
+  <proof prover="0"><result status="valid" steps="448"/></proof>
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="449"/></proof>
@@ -592,6 +643,16 @@
  </goal>
 </theory>
 <theory name="Tlsf__block__types__valid_addressPredicate__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Tlsf__block__types__address_spacePredicate__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition">
