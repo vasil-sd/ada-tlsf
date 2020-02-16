@@ -4,7 +4,7 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                            return Block is
       pragma Assert (Space.Last > Space.First);
       Size : BT.Aligned_Size := Space.Last - Space.First;
-      B    : Block := (Space.First, Size);
+      B    : Block := (Space.First, BT.Address_Null, Size);
    begin
       pragma Assert (Valid_Block (Space, B));
       pragma Assert (Next_Block_Address(B) = Space.Last);
@@ -141,8 +141,7 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                      Index_Type'Pos (Index_Type'First))
        and then (Offset in 
                    Index_Type'Pos (Index_Type'First) - Index_Type'Pos (Idx) ..
-                       Index_Type'Pos (Index_Type'Last) - Index_Type'Pos (Idx)),
-   Post => Shift_Index'Result in Index_Type'Range;
+                       Index_Type'Pos (Index_Type'Last) - Index_Type'Pos (Idx));
    pragma Annotate (GNATprove, Inline_For_Proof, Shift_Index);
                    
    procedure Range_Shifted_Preserves_Partial_Validity 
@@ -275,11 +274,70 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                       Blocks_Overlap (Space,
                         Get (Blocks, I),
                         Get (Blocks, J))
-                      -- case analysis
                       and then
-                      -- I + 1 = J
                       Get (Blocks, I).Address + Get (Blocks, I).Size > Get (Blocks, J).Address))));
    end Continuous_Coverage_Implies_Non_Overlapping;
+
+   procedure Continuous_Coverage_Implies_Uniqueness
+     (Space : Address_Space;
+      Blocks : FV_Pkg.Sequence;
+      From   : Index_Type;
+      To     : Extended_Index)
+     with 
+       Global => null,
+       Pre => 
+         To <= Last (Blocks) and then 
+     All_Blocks_Are_Valid (Space, Blocks, From, To) and then
+     Coverage_Is_Continuous (Space, Blocks, From, To) and then
+     Blocks_Addresses_Are_In_Ascending_Order (Blocks, From, To),
+     Post => 
+       All_Block_Are_Uniq (Space, Blocks, From, To)
+   is
+   begin
+      
+      for T in From .. To loop
+         pragma Loop_Invariant
+           (for all I in From .. T =>
+              (for all J in From .. T =>
+                   (if I < J then Get (Blocks, I).Address < Get (Blocks, J).Address)));
+
+         pragma Loop_Invariant
+           (for all I in From .. T =>
+              (for all J in From .. T =>
+                   (if I > J then Get (Blocks, I).Address > Get (Blocks, J).Address)));
+  
+         pragma Loop_Invariant
+           (for all I in From .. T =>
+              (for all J in From .. T =>
+                   (if I = J then Get (Blocks, I).Address = Get (Blocks, J).Address)));
+
+      end loop;
+
+      pragma Assert
+        (for all I in From .. To =>
+           (for all J in From .. To =>
+                (if I < J then Get (Blocks, I).Address < Get (Blocks, J).Address)));
+      
+      pragma Assert
+        (for all I in From .. To =>
+           (for all J in From .. To =>
+                (if I > J then Get (Blocks, I).Address > Get (Blocks, J).Address)));
+      
+      pragma Assert
+        (for all I in From .. To =>
+           (for all J in From .. To =>
+                (if I = J then Get (Blocks, I).Address = Get (Blocks, J).Address)));
+      
+      pragma Assert 
+        (if not All_Block_Are_Uniq (Space, Blocks, From, To)
+         then 
+           (for some I in From .. To =>
+                (for some J in From .. To =>
+                     (I < J and then 
+                        (Get (Blocks, I).Address =
+                             Get (Blocks, J).Address)))));
+   end Continuous_Coverage_Implies_Uniqueness;
+
    
    procedure Partial_Validity_Is_Additive 
      ( Space  : Address_Space;
@@ -331,7 +389,7 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
    is
    begin
       for I in From .. To loop
-         for J in From .. To loop
+         for J in From .. I loop
             pragma Loop_Invariant (Partial_Valid (Space, Blocks, J, I));
          end loop;
       end loop;
@@ -360,6 +418,8 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
          Continuous_Coverage_Implies_Non_Overlapping
            (Space, Blocks, From, Idx + 1);
          pragma Assert (Blocks_Do_Not_Overlap (Space, Blocks, From, Idx + 1));
+         Continuous_Coverage_Implies_Uniqueness
+           (Space, Blocks, From, Idx + 1);
          pragma Assert (All_Block_Are_Uniq (Space, Blocks, From, Idx + 1));
          pragma Loop_Invariant (Get (Blocks, Idx).Address < Get (Blocks, Idx + 1).Address);
          pragma Loop_Invariant (Neighbor_Blocks (Get (Blocks, Idx), Get (Blocks, Idx + 1)));
@@ -373,29 +433,47 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
    procedure Equality_Preserves_Validity (Old_M, New_M : Formal_Model)
    is
    begin
+      pragma Assert (Valid (Old_M));
       pragma Assert (Old_M = New_M);
+      pragma Assert (for all Idx in 1 .. Last (Old_M.Blocks) =>
+                       Get (Old_M.Blocks, Idx) = Get (New_M.Blocks, Idx));
+      pragma Assert (Blocks_Addresses_Are_In_Ascending_Order (New_M.Blocks, 1, Last (New_M.Blocks)));
+      pragma Assert (Coverage_Is_Continuous (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+      pragma Assert (Blocks_Do_Not_Overlap (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+      pragma Assert (All_Block_Are_Uniq (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
       pragma Assert (Valid (New_M));
       null;
    end Equality_Preserves_Validity;
-   
-   procedure Split_Block(M               : Formal_Model;
+
+   procedure Split_Block (M               : Formal_Model;
                          B               : Block;
                          L_Size, R_Size  : BT.Aligned_Size;
                          B_Left, B_Right : out Block;
                          New_M           : out Formal_Model)
    is
-      B_Found : Boolean := False;
+      Next : Block := B;
       Old_Blocks : FV_Pkg.Sequence;
    begin
       New_M := M;
       pragma Assert (if not Valid_Block(M.Mem_Region, B) and Valid(M) 
                      then not In_Model(M, B));
       pragma Assert (Valid_Block(M.Mem_Region, B));
-      B_Left := Block'(Address => B.Address,
-                       Size    => L_Size);
-      pragma Assert (Valid_Block(New_M.Mem_Region, B_Left));
-      B_Right := Block'(Address => Next_Block_Address(B_Left),
-                        Size    => R_Size);
+      B_Left := Block'(Address            => B.Address,
+                       Prev_Block_Address => B.Prev_Block_Address,
+                       Size               => L_Size);
+      pragma Assert (B_Left.Address in New_M.Mem_Region.First .. New_M.Mem_Region.Last);
+      pragma Assert (Integer (B_Left.Size) < Integer (B.Size));
+      pragma Assert (Integer (B_Left.Address) + Integer (B_Left.Size) in 0 .. Integer (BT.Address'Last));
+      pragma Assert (B_Left.Address + B_Left.Size in New_M.Mem_Region.First .. New_M.Mem_Region.Last);
+      pragma Assert (B_Left.Prev_Block_Address = B.Prev_Block_Address);
+      pragma Assert (B_Left.Prev_Block_Address = BT.Address_Null or else
+                     B_Left.Prev_Block_Address in New_M.Mem_Region.First .. New_M.Mem_Region.Last);
+      pragma Assert (Valid_Block (New_M.Mem_Region, B_Left));
+      B_Right := Block'(Address            => Next_Block_Address (B_Left),
+                        Prev_Block_Address => B_Left.Address,
+                        Size               => R_Size);
+      pragma Assert (Next_Block_Address (B_Right) = Next_Block_Address (B));
+      pragma Assert (Neighbor_Blocks(B_Left, B_Right));
       pragma Assert (Valid_Block(New_M.Mem_Region, B_Right));
       pragma Assert (B_Left /= B and then B_Left.Address = B.Address);
       pragma Assert (In_Model(M, B));
@@ -415,6 +493,7 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
         (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks));
       Every_Subseq_Of_Partial_Valid_Seq_Is_Partial_Valid
         (M.Mem_Region, M.Blocks, 1, Last (M.Blocks));
+      
       for Idx in 1 .. Last (New_M.Blocks) loop
          if B = Get(New_M.Blocks, Idx) then
             pragma Assert (not Contains (New_M.Blocks, 1, Idx - 1, B));
@@ -471,7 +550,18 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
             pragma Assume (Length (New_M.Blocks) < Count_Type'Last);
             Old_Blocks := New_M.Blocks;
             pragma Assert (Get (New_M.Blocks, Idx) = B_Left);
+            pragma Assert (Last (Old_Blocks) = Last (New_M.Blocks));
+            pragma Assert (Length (Old_Blocks) = Length (New_M.Blocks));
+            pragma Assert (Idx in 1 .. Last(New_M.Blocks));
+            pragma Assert (Idx in 1 .. Last(Old_Blocks));
+            pragma Assert (if Idx < Last (New_M.Blocks)
+                           then Next_Block_Address (B) = Get (New_M.Blocks, Idx + 1).Address);
+            pragma Assert (if Idx < Last (New_M.Blocks)
+                           then Next_Block_Address (B_Right) = Get (New_M.Blocks, Idx + 1).Address);
             New_M.Blocks := Add (New_M.Blocks, Idx + 1, B_Right);
+            pragma Assert (if Idx < Last (Old_Blocks)
+                           then Next_Block_Address (B_Right) = Get (New_M.Blocks, Idx + 2).Address);
+            pragma Assert (Last (Old_Blocks) + 1 = Last (New_M.Blocks));
             pragma Assert (Get (New_M.Blocks, Idx) = B_Left);
             
             pragma Assert (if Idx < Last (Old_Blocks) then
@@ -479,7 +569,7 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                              Get (M.Blocks, Last (M.Blocks))); 
 
             pragma Assert (Range_Equal (Old_Blocks, New_M.Blocks, 1, Idx));
-            pragma Assert (Range_Shifted (Old_Blocks, New_M.Blocks, Idx+1, Last (Old_Blocks), 1));
+            pragma Assert (Range_Shifted (Old_Blocks, New_M.Blocks, Idx + 1, Last (Old_Blocks), 1));
                              
             Range_Equal_Preserves_Partial_Validity
               (M.Mem_Region, New_M.Mem_Region,
@@ -514,17 +604,124 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                pragma Assert (not In_Model (New_M, B));
                null;
             else
+               Next :=  Get (New_M.Blocks, Idx + 2);
+               pragma Assert (Next_Block_Address(B) = Next.Address);
+               pragma Assert (Get (New_M.Blocks, Idx + 1) = B_Right);
+               pragma Assert (Next_Block_Address (B_Right) = Next.Address);
+               pragma Assert (Next.Address > B_Right.Address);
+               Next.Prev_Block_Address := B_Right.Address;
+               if Idx + 2 = Last (New_M.Blocks) then
+
+                  pragma Assert (Next.Address =
+                                   Get (M.Blocks, Last (M.Blocks)).Address); 
+                  pragma Assert (Next.Size =
+                                   Get (M.Blocks, Last (M.Blocks)).Size); 
+               
+               end if;
+               
+               pragma Assert (Last (Old_Blocks) + 1 = Last (New_M.Blocks));
+               
+               pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
+                                Get (M.Blocks, Last (M.Blocks))); 
+
+               Old_Blocks := New_M.Blocks;
+
+               pragma Assert (Get (Old_Blocks, Last (Old_Blocks)) =
+                                Get (M.Blocks, Last (M.Blocks))); 
+
+               pragma Assert (Idx + 2 <= Last (New_M.Blocks));
+               New_M.Blocks := Set (New_M.Blocks, Idx + 2, Next);
+               
+               if Idx + 2 = Last (New_M.Blocks) then
+
+                  pragma Assert (Next = Get (New_M.Blocks, Last (New_M.Blocks))); 
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Address =
+                                   Get (M.Blocks, Last (M.Blocks)).Address); 
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Size =
+                                   Get (M.Blocks, Last (M.Blocks)).Size); 
+                  
+               else
+                  pragma Assert (Idx + 2 < Last (New_M.Blocks));
+                  pragma Assert (Range_Equal (Old_Blocks, New_M.Blocks, Idx + 3, Last (New_M.Blocks)));
+
+                  pragma Assert (Get (Old_Blocks, Last (Old_Blocks)) =
+                                Get (M.Blocks, Last (M.Blocks))); 
+
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
+                                   Get (M.Blocks, Last (M.Blocks))); 
+                  
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Address =
+                                   Get (M.Blocks, Last (M.Blocks)).Address); 
+                  
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Size =
+                                   Get (M.Blocks, Last (M.Blocks)).Size); 
+                  
+               end if;
+
+               pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Address =
+                                Get (M.Blocks, Last (M.Blocks)).Address); 
+               pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Size =
+                                Get (M.Blocks, Last (M.Blocks)).Size); 
+
+               pragma Assert (Range_Equal (Old_Blocks, New_M.Blocks, 1, Idx + 1));
+
+               Range_Equal_Preserves_Partial_Validity
+                 (M.Mem_Region, New_M.Mem_Region,
+                  Old_Blocks, New_M.Blocks,
+                  1, Idx + 1);
+               
+               if Idx + 2 < Last (New_M.Blocks) then
+
+                  pragma Assert (Range_Equal (Old_Blocks, New_M.Blocks, Idx + 3, Last (New_M.Blocks)));
+
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, Old_Blocks, Idx + 3, Last (New_M.Blocks)));
+                  
+                  Range_Equal_Preserves_Partial_Validity
+                    (M.Mem_Region, New_M.Mem_Region,
+                     Old_Blocks, New_M.Blocks,
+                     Idx + 3, Last (New_M.Blocks));
+               
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 3, Last (New_M.Blocks)));
+
+               end if;
+                              
+               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx + 1));
+               
                pragma Assert (Neighbor_Blocks (B_Right, Get (New_M.Blocks, Idx + 2)));
+
                Increment_Partial_Validity (New_M.Mem_Region, New_M.Blocks, 1, Idx + 1);
                pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx + 2));
-               pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 2, Last (New_M.Blocks)));
-               Partial_Validity_Is_Additive (New_M.Mem_Region, New_M.Blocks, 1, Idx + 2, Idx + 2, Last (New_M.Blocks));
+               
+               if Idx + 2 < Last (New_M.Blocks) then
+               
+                  pragma Assert (Neighbor_Blocks (Get (New_M.Blocks, Idx + 2), Get (New_M.Blocks, Idx + 3)));
+                  Increment_Partial_Validity (New_M.Mem_Region, New_M.Blocks, 1, Idx + 2);
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Idx + 3));
+
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, Idx + 3, Last (New_M.Blocks)));
+                  Partial_Validity_Is_Additive (New_M.Mem_Region, New_M.Blocks, 1, Idx + 3, Idx + 3, Last (New_M.Blocks));
+
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+               else
+                  pragma Assert (Idx + 2 = Last (New_M.Blocks));
+                  pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+               end if;
+
                pragma Assert (Partial_Valid (New_M.Mem_Region, New_M.Blocks, 1, Last (New_M.Blocks)));
+                 
                if Idx = 1 then
                   pragma Assert (B_Left.Address = B.Address);
+                  pragma Assert (B_Left.Prev_Block_Address = B.Prev_Block_Address);
+                  pragma Assert (B_Left.Prev_Block_Address = BT.Address_Null);
                   pragma Assert (Get (New_M.Blocks, 1) = B_Left);
-                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
-                                   Get (M.Blocks, Last (M.Blocks)));
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Address =
+                                   Get (M.Blocks, Last (M.Blocks)).Address); 
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Size =
+                                   Get (M.Blocks, Last (M.Blocks)).Size);
+                  
+                  pragma Assert (Get (New_M.Blocks, 1).Address = New_M.Mem_Region.First);
+                  pragma Assert (Next_Block_Address (Get (New_M.Blocks, Last (New_M.Blocks))) = 
+                                New_M.Mem_Region.Last);
                   pragma Assert (Boundary_Blocks_Coverage_Is_Correct (New_M.Mem_Region, New_M.Blocks));
                   pragma Assert (Valid (New_M));
                   pragma Assert (In_Model (New_M, B_Right));
@@ -533,8 +730,14 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
                   null;
                else
                   pragma Assert (Get (New_M.Blocks, 1) = Get (M.Blocks, 1));
-                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)) =
-                                   Get (M.Blocks, Last (M.Blocks)));
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Address =
+                                   Get (M.Blocks, Last (M.Blocks)).Address); 
+                  pragma Assert (Get (New_M.Blocks, Last (New_M.Blocks)).Size =
+                                Get (M.Blocks, Last (M.Blocks)).Size); 
+                  pragma Assert (Get (New_M.Blocks, 1).Address = New_M.Mem_Region.First);
+                  pragma Assert (Get (New_M.Blocks, 1).Prev_Block_Address = BT.Address_Null);
+                  pragma Assert (Next_Block_Address (Get (New_M.Blocks, Last (New_M.Blocks))) = 
+                                   New_M.Mem_Region.Last);
                   pragma Assert (Boundary_Blocks_Coverage_Is_Correct (New_M.Mem_Region, New_M.Blocks));
                   pragma Assert (Valid (New_M));
                   pragma Assert (In_Model (New_M, B_Right));
@@ -549,6 +752,8 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
             pragma Assert (In_Model(New_M, B_Right));
             exit;
          end if;
+         pragma Loop_Invariant (Next = B);
+         pragma Loop_Invariant (Idx in 1 .. Last (New_M.Blocks));
          pragma Loop_Invariant (not Contains(New_M.Blocks, 1, Idx, B));
          pragma Loop_Invariant (for all I in 1..Last(New_M.Blocks) => 
                                   (Get (New_M.Blocks, I) = Get (M.Blocks, I)));

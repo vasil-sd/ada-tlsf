@@ -10,9 +10,12 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
    
    type Block is record
       Address : BT.Aligned_Address;
+      Prev_Block_Address : BT.Aligned_Address := BT.Address_Null;
       Size    : BT.Aligned_Size;
    end record
-   with Predicate => Size >= BT.Quantum and Address >= BT.Quantum;
+     with Predicate => Size >= BT.Quantum and Address >= BT.Quantum and
+     (Prev_Block_Address = BT.Address_Null or 
+        (Prev_Block_Address >= BT.Quantum and Prev_Block_Address < Address));
 
    use type BT.Aligned_Address;
    use type BT.Aligned_Size;
@@ -45,10 +48,14 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
    function Valid_Block (AS: Address_Space; B: Block) return Boolean
    is (B.Address in AS.First..AS.Last and then
        Integer(B.Address) + Integer(B.Size) in 0..Integer(BT.Address'Last) and then
-       B.Address + B.Size in AS.First..AS.Last)
+       B.Address + B.Size in AS.First .. AS.Last and then
+         (B.Prev_Block_Address = BT.Address_Null or else
+          B.Prev_Block_Address in AS.First .. AS.Last))
      with Post => (if Valid_Block'Result = True 
                      then B.Address in AS.First..AS.Last and
-                       B.Address + B.Size in AS.First..AS.Last);
+                       B.Address + B.Size in AS.First .. AS.Last and
+                     (B.Prev_Block_Address = BT.Address_Null or
+                          B.Prev_Block_Address in AS.First .. AS.Last));
    pragma Annotate (GNATprove, Inline_For_Proof, Valid_Block);
      
    function Next_Block_Address (B: Block)
@@ -59,8 +66,9 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
    
    function Neighbor_Blocks (B_Left, B_Right: Block)
                               return Boolean
-   is (Next_Block_Address(B_Left) = B_Right.Address)
-     with Pre => Integer(B_Left.Address) + Integer(B_Left.Size) in 0..Integer(BT.Address'Last);     
+   is (Next_Block_Address (B_Left) = B_Right.Address
+       and B_Right.Prev_Block_Address = B_Left.Address)
+     with Pre => Integer (B_Left.Address) + Integer (B_Left.Size) in 0 .. Integer (BT.Address'Last);     
    pragma Annotate (GNATprove, Inline_For_Proof, Neighbor_Blocks);
 
    -- excessive, but for clarity
@@ -88,7 +96,8 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
                                                 return Boolean
    is (if Last(BS) >=1
        then 
-         (Get(BS, 1).Address = AS.First
+         (Get (BS, 1).Address = AS.First
+          and Get (BS, 1).Prev_Block_Address = BT.Address_Null
           and Next_Block_Address(Get(BS, Last(BS))) = AS.Last))
        with 
          Pre => All_Blocks_Are_Valid(AS, BS, 1, Last(BS));
@@ -175,7 +184,7 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
        Pure_Function,
        Pre => Valid (M) and then In_Model (M, B),
      Post => (if B.Address = M.Mem_Region.First
-                then B = Get (M.Blocks, 1) and 
+                then B = Get (M.Blocks, 1) and
                   Is_First_Block'Result = True
                     else Is_First_Block'Result = False);
    
@@ -219,7 +228,8 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
      with Post =>
        Valid_Block (Space, Initial_Block'Result) and then
      Initial_Block'Result.Address = Space.First and then 
-     Next_Block_Address (Initial_Block'Result) = Space.Last;
+     Next_Block_Address (Initial_Block'Result) = Space.Last and then
+     Initial_Block'Result.Prev_Block_Address = BT.Address_Null;
    
    function Init_Model(Space : Address_Space)
                        return Formal_Model
@@ -260,8 +270,10 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
             and In_Model (New_M, B_Right)
             and B_Left.Address = B.Address
             and B_Left.Size = L_Size
+            and B_Left.Prev_Block_Address = B.Prev_Block_Address
             and B_Right.Address = B.Address + L_Size
             and B_Right.Size = R_Size
+ 
             and Neighbor_Blocks (B_Left, B_Right)
             and Is_First_Block (M, B) = Is_First_Block (New_M, B_Left)
             and Is_Last_Block (M, B) = Is_Last_Block (New_M, B_Right))
