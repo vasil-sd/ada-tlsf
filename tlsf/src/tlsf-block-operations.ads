@@ -16,6 +16,8 @@ package TLSF.Block.Operations with SPARK_Mode is
    use type BT.Address;
    use type BT.Size;
 
+   use type MB.Block;
+   
    type Block is record
       Address : BT.Aligned_Address;
       Header  : BT.Block_Header;
@@ -51,8 +53,6 @@ package TLSF.Block.Operations with SPARK_Mode is
      Post => Next_Block_Address'Result =
        MB.Next_Block_Address (To_Model (Ctx, B));
 
-   
-   
    function Is_First_Block (Ctx  : TC.Context;
                             B    : Block)
                             return Boolean
@@ -96,22 +96,22 @@ package TLSF.Block.Operations with SPARK_Mode is
          (To_Model (Ctx, Left),
           To_Model (Ctx, Right));
 
-     
---     procedure Get_Next_Block (Ctx : TC.Context;
---                               Addr : BT.Aligned_Address;
---                               Hdr  : BT.Block_Header;
---                               Next_Addr : out BT.Aligned_Address;
---                               Next_Hdr  : out BT.Block_Header)
---       with Global => (Proof_In => MC.State),
---       Pre => Valid_Block (Ctx, Addr, Hdr) and then
---       MC.Has_Model (Ctx) and then 
---       MB.Valid (MC.Get_Block_Model (Ctx)) and then
---       MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Addr, Hdr)) and then
---       not Is_Last_Block (Ctx, Addr, Hdr),
---       Post => 
-     
-     
-   
+   procedure Get_Next_Block (Ctx  : TC.Context;
+                             B    : Block;
+                             Next : out Block)
+     with Global => (Proof_In => MC.State),
+     Pre => Valid_Block (Ctx, B) and then
+     MC.Has_Model (Ctx) and then 
+     MB.Valid (MC.Get_Block_Model (Ctx)) and then
+     MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)) and then
+     not Is_Last_Block (Ctx, B) and then
+     MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)).Address 
+       =  Next_Block_Address(Ctx, B),
+     Post => Valid_Block (Ctx, Next) and then
+     MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Next)) and then
+     To_Model (Ctx, Next) = MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)) and then
+     Neighbor_Blocks (Ctx, B, Next);
+    
    pragma Unevaluated_Use_Of_Old (Allow);
    
    procedure Split_Block (Ctx                   : TC.Context;
@@ -195,9 +195,33 @@ private
 --             MB.In_Model (MC.Get_Block_Model (Ctx),
 --                          To_Model (Ctx, Addr, Get_Block_At_Address'Result));
 --  
+
+   -- Only possible way to reificate blocks in memory is to use Store_Block
+   -- Store_Block works only for blocks that are reflected in model
+   -- So if we load block header from address where it was stored by Store_Block
+   -- then we may be confident that this block already was reflected in model
+   -- That is why checking only reflection of block address is sufficient
+   procedure Load_Block (Ctx  : TC.Context;
+                         Addr : BT.Aligned_Address; 
+                         B    : out Block)
+     with 
+       Global => (Proof_In => MC.State),
+     Pre => 
+       MC.Has_Model (Ctx) and then
+     MB.Valid (MC.Get_Block_Model (Ctx)) and then
+     MB.Address_In_Model (MC.Get_Block_Model (Ctx), Addr),
+     Post =>
+       B.Address = Addr and then
+       Valid_Block (Ctx, B) and then
+     MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, B));
+
+   -- Stroring blocks is enabled only for blocks that are already reflected
+   -- in model
    procedure Store_Block (Ctx    : TC.Context;
-                         B      : Block)
-     with Pre => 
+                          B      : Block)
+     with
+       Global => (Proof_In => MC.State), 
+     Pre => 
        Valid_Block (Ctx, B) and then 
      MC.Has_Model (Ctx) and then
      MB.Valid (MC.Get_Block_Model (Ctx)) and then

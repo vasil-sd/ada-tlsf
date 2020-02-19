@@ -48,9 +48,34 @@ package body TLSF.Block.Operations with SPARK_Mode is
                        Size               => B.Header.Size);
    end To_Model;
 
-   --------------------------
-   -- Set_Block_At_Address --
-   --------------------------
+   --------------------
+   -- Get_Next_Block --
+   --------------------
+   
+   procedure Get_Next_Block (Ctx  : TC.Context;
+                             B    : Block;
+                             Next : out Block)
+   is
+   begin
+      Load_Block (Ctx, Next_Block_Address (Ctx, B), Next);
+      -- proof of reflection of Next in model
+      pragma Assert (To_Model (Ctx, Next).Address = Next.Address);
+      pragma Assert (MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Next)));
+      pragma Assert (MB.In_Model (MC.Get_Block_Model (Ctx),
+                     MB.Get_Next (MC.Get_Block_Model (Ctx),
+                       To_Model (Ctx, B))));
+      pragma Assert (To_Model (Ctx, Next).Address = MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)).Address);
+      -- use Lemma
+      MB.Addresses_Equality_Implies_Blocks_Equality 
+        (MC.Get_Block_Model (Ctx), 
+         To_Model (Ctx, Next),
+         MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)));
+      pragma Assert (To_Model (Ctx, Next) = MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)));
+   end Get_Next_Block;
+   
+   -----------------
+   -- Store_Block --
+   -----------------
 
    procedure Store_Block 
      (Ctx : TC.Context; B : Block)
@@ -65,7 +90,25 @@ package body TLSF.Block.Operations with SPARK_Mode is
       Hdr := B.Header;
    end Store_Block;
    
+   ----------------
+   -- Load_Block --
+   ----------------
    
+   procedure Load_Block (Ctx  : TC.Context;
+                         Addr : BT.Aligned_Address; 
+                         B    : out Block)
+     with SPARK_Mode => Off
+   is
+      use type SSE.Integer_Address;
+      
+      Hdr : BT.Block_Header with Address =>
+        SSE.To_Address (SSE.To_Integer (Ctx.Memory.Base) + 
+                            SSE.Integer_Address (Addr)); 
+   begin
+      B := Block'(Address => Addr,
+                  Header  => Hdr);
+   end Load_Block;
+ 
    -----------------
    -- Split_Block --
    -----------------
@@ -106,6 +149,9 @@ package body TLSF.Block.Operations with SPARK_Mode is
                       New_M   => New_Model);
       
       MC.Set_Block_Model (Ctx, New_Model);
+
+      -- todo: set of next(right).prev_block_address
+      --     : need to extend "=" of MB.Block and recheck all proofs
       
       -- proof that new blocks have their model counterparts
       pragma Assert (To_Model (Ctx, Left) = B_Left);
