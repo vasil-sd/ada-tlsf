@@ -34,7 +34,6 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
    
    use FV_Pkg;
 
-   
    use type BT.Address_Space;
    subtype Address_Space is BT.Address_Space;
    
@@ -142,10 +141,25 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
                                 return Boolean
    is (for all Idx1 in From..To => 
          (for all Idx2 in From..To =>
-              (if Get(BS, Idx1) = Get(BS, Idx2) then Idx1 = Idx2)))
+            (if Get (BS, Idx1) = Get (BS, Idx2)
+             then Idx1 = Idx2)))
        with Pre => To <= Last(BS)
      and then All_Blocks_Are_Valid(AS, BS, From, To);
    pragma Annotate (GNATprove, Inline_For_Proof, All_Block_Are_Uniq);
+
+   function All_Block_Addresses_Are_Uniq (AS : Address_Space;
+                                BS : FV_Pkg.Sequence;
+                                From : Index_Type;
+                                To   : Extended_Index)
+                                return Boolean
+   is (for all Idx1 in From..To => 
+         (for all Idx2 in From..To =>
+            (if Get (BS, Idx1).Address = Get (BS, Idx2).Address
+             then Idx1 = Idx2)))
+       with Pre => To <= Last(BS)
+     and then All_Blocks_Are_Valid(AS, BS, From, To);
+   pragma Annotate (GNATprove, Inline_For_Proof, All_Block_Addresses_Are_Uniq);
+
    
    function Partial_Valid(AS: Address_Space; BS: FV_Pkg.Sequence;
                           From : Index_Type; To : Extended_Index)
@@ -154,7 +168,8 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
        and then Blocks_Addresses_Are_In_Ascending_Order(BS, From, To)
        and then Coverage_Is_Continuous(AS, BS, From, To)
        and then Blocks_Do_Not_Overlap(AS, BS, From, To)
-       and then All_Block_Are_Uniq(AS, BS, From, To))
+       and then All_Block_Are_Uniq (AS, BS, From, To)
+       and then All_Block_Addresses_Are_Uniq (AS, BS, From, To))
      with Global => null,
      Depends => (Partial_Valid'Result => (AS, BS, From, To)),
      Pre => To <= Last(BS),
@@ -172,11 +187,40 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
      Pre => Valid (Old_M) and Old_M = New_M,
      Post => Valid (New_M);
    
-   function In_Model(M: Formal_Model; B : Block) return Boolean
-   is (Contains(M.Blocks, 1, Last(M.Blocks), B))
+   function Address_In_Model (M : Formal_Model; Addr : BT.Aligned_Address)
+     return Boolean
+   is (for some Idx in 1 .. Last (M.Blocks) =>
+          Get (M.Blocks, Idx).Address = Addr)
+     with 
+       Global => null,
+       Pure_Function,
+       Pre => Valid (M);
+   
+   function In_Model (M : Formal_Model; B : Block) return Boolean
+   is (Contains (M.Blocks, 1, Last (M.Blocks), B))
      with Global => null,
      Pure_Function,
-     Pre => Valid(M);
+     Pre => Valid (M),
+     Post => (if In_Model'Result then Address_In_Model (M, B.Address));
+   
+   procedure Addresses_Equality_Implies_Blocks_Equality
+     (M : Formal_Model)
+     with Global => null,
+     Pre => Valid (M),
+     Post => (for all I in 1 .. Last (M.Blocks) => In_Model (M, Get (M.Blocks, I)))
+     and then
+       (for all I in 1 .. Last (M.Blocks) =>
+          (for all J in 1 .. Last (M.Blocks) =>
+               (if Get (M.Blocks, I).Address = Get (M.Blocks, J).Address
+                      then I = J and then 
+                        Get (M.Blocks, I) = Get (M.Blocks, J))));
+
+   procedure Addresses_Equality_Implies_Blocks_Equality
+     (M           : Formal_Model;
+      Left, Right : Block)
+     with Global => null,
+     Pre => Valid (M) and then In_Model (M, Left) and then In_Model (M, Right),
+     Post => (if Left.Address = Right.Address then Left = Right);
    
    function Is_First_Block(M: Formal_Model; B: Block) return Boolean
      with 
@@ -197,7 +241,7 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
                   then B = Get (M.Blocks, Last (M.Blocks)) and
                 Is_Last_Block'Result = True
                   else Is_Last_Block'Result = False);
-
+   
    function Get_Prev(M: Formal_Model; B: Block) return Block
      with
        Global => null,
@@ -245,7 +289,6 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
      and then In_Model (Init_Model'Result, Initial_Block (Space))
      and then Is_Last_Block (Init_Model'Result, Initial_Block (Space))
      and then Is_First_Block (Init_Model'Result, Initial_Block (Space));
-   
    
    procedure Split_Block (M               : Formal_Model;
                           B               : Block;
