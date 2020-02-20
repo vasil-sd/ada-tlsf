@@ -125,7 +125,16 @@ package body TLSF.Block.Operations with SPARK_Mode is
       
       New_Model       : MB.Formal_Model with Ghost;
       B_Left, B_Right : MB.Block := To_Model (Ctx, B) with Ghost;
+      
+      Next : Block := B;
+      
+      B_Is_Last_Block : constant Boolean := Is_Last_Block(Ctx, B);
    begin
+      
+      if not B_Is_Last_Block then
+         Get_Next_Block (Ctx, B, Next);
+      end if;
+      
       Left := Block'(Address => B.Address,
                      Header  => BT.Block_Header_Free'(Status             => BT.Free,
                                                       Prev_Block_Address => B.Header.Prev_Block_Address,
@@ -150,9 +159,6 @@ package body TLSF.Block.Operations with SPARK_Mode is
       
       MC.Set_Block_Model (Ctx, New_Model);
 
-      -- todo: set of next(right).prev_block_address
-      --     : need to extend "=" of MB.Block and recheck all proofs
-      
       -- proof that new blocks have their model counterparts
       pragma Assert (To_Model (Ctx, Left) = B_Left);
       pragma Assert (To_Model (Ctx, Right) = B_Right);
@@ -162,7 +168,7 @@ package body TLSF.Block.Operations with SPARK_Mode is
       pragma Assert (MB.In_Model (New_Model, B_Right));
 
       pragma Assert (MC.Get_Block_Model (Ctx) = New_Model);
-      
+            
       MB.Equality_Preserves_Validity (New_Model, MC.Get_Block_Model (Ctx));
       
       pragma Assert (MB.Valid (MC.Get_Block_Model (Ctx)));
@@ -175,6 +181,21 @@ package body TLSF.Block.Operations with SPARK_Mode is
 
       Store_Block (Ctx, Left);
       Store_Block (Ctx, Right);
+
+      pragma Assert (Is_Last_Block(Ctx, Right) = B_Is_Last_Block);
       
+      if not B_Is_Last_Block then
+         Next.Header.Prev_Block_Address := Right.Address;
+         pragma Assert (MC.Get_Block_Model (Ctx) = New_Model);
+         pragma Assert (Next.Address = Next_Block_Address (Ctx, B));         
+         MB.Equality_Preserves_Block_Relations (MC.Get_Block_Model (Ctx), New_Model, B_Right);
+         pragma Assert (MB.Get_Next (New_Model, B_Right) = MB.Get_Next (MC.Get_Block_Model (Ctx), B_Right));
+         pragma Assert (MB.Get_Next (New_Model, B_Right) = To_Model (Ctx, Next));
+         pragma Assert (MB.Get_Next (MC.Get_Block_Model (Ctx), B_Right) = To_Model (Ctx, Next));
+         pragma Assert (MB.In_Model (MC.Get_Block_Model (Ctx), To_Model(Ctx, Next)));
+         pragma Assert (MB.Neighbor_Blocks (To_Model (Ctx, Right), To_Model (Ctx, Next)));
+         Store_Block (Ctx, Next);
+      end if;
+
    end Split_Block;
 end TLSF.Block.Operations;

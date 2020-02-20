@@ -119,35 +119,68 @@ package TLSF.Block.Operations with SPARK_Mode is
                           Left_Size, Right_Size : BT.Aligned_Size;
                           Left, Right           : out Block)
      with Global => (In_Out => MC.State),
-     Pre => Valid_Block (Ctx, B) and then
+     
+     -- PRECONDITION of Split_Block
+     Pre =>
+     
+     -- input block is valid regarding current context
+     Valid_Block (Ctx, B) and then
+     
+     -- sizes are correct
      Left_Size >= Small_Block_Size and then
      Right_Size >= Small_Block_Size and then 
      Left_Size + Right_Size = B.Header.Size and then
+     
+     -- input block is free and already unlinked from free lists
      BT.Is_Block_Free (B.Header) and then
      not BT.Is_Block_Linked_To_Free_List (B.Header) and then
+     
+     -- formal model for current context is present and it is valid
      MC.Has_Model (Ctx) and then
      MB.Valid (MC.Get_Block_Model (Ctx)) and then
+     
+     -- input block is reflected into formal model
      MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)),
-     Post => Valid_Block (Ctx, Left)
-     and then Valid_Block (Ctx, Right)
+       
+     -- POSCONDITION of Split_Block
+   
+     Post =>
+       
+     -- output blocks are valid regarding current context  
+     Valid_Block (Ctx, Left) and then Valid_Block (Ctx, Right)
+     
+     -- they are free and not linked to any of free lists
      and then BT.Is_Block_Free (Left.Header)
      and then BT.Is_Block_Free (Right.Header)
      and then not BT.Is_Block_Linked_To_Free_List (Left.Header)
      and then not BT.Is_Block_Linked_To_Free_List (Right.Header)
+     
+     -- they are in neighborhood relation
      and then Neighbor_Blocks (Ctx, Left, Right)
+     
+     -- updated formal model is valid
      and then MB.Valid (MC.Get_Block_Model (Ctx))
+       
+     -- and output blocks are reflected into formal model
      and then MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Left))
      and then MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right))
-     and then MB.Neighbor_Blocks (To_Model (Ctx, Left), 
-                                  To_Model (Ctx, Right))
-     and then (if Is_First_Block (Ctx, B)'Old then
-                   Is_First_Block (Ctx, Left) and then
-                   MB.Is_First_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Left)))
-     and then (if Is_Last_Block (Ctx, B)'Old then
-                   Is_Last_Block (Ctx, Right) and  then
-                   MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right)));
+       
+     -- neighborhood relation is reflected too
+     and then MB.Neighbor_Blocks (To_Model (Ctx, Left), To_Model (Ctx, Right))
      
+     -- being first and last is kept appropriately
+     and then Is_First_Block (Ctx, B)'Old = Is_First_Block (Ctx, Left)
+     and then MB.Is_First_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, B))'Old =
+       MB.Is_First_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Left))
+     and then Is_First_Block (Ctx, Left) =
+       MB.Is_First_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Left))
      
+     and then Is_Last_Block (Ctx, B)'Old = Is_Last_Block (Ctx, Right)
+     and then MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, B))'Old =
+       MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right))
+     and then Is_Last_Block (Ctx, Right) =
+       MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right));
+    
    
 --     function Get_Prev_Free_Block (Ctx  : TC.Context;
 --                                   Addr : BT.Aligned_Address;
