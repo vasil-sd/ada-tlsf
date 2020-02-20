@@ -19,12 +19,7 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
 
    use type BT.Aligned_Address;
    use type BT.Aligned_Size;
-   
-   function "=" (Left, Right : Block) return Boolean
-   is (Left.Address = Right.Address and then 
-       Left.Size = Right.Size)
-     with Global => null, Pure_Function;
-   
+      
    use Ada.Containers;
    subtype Index_Type is Positive;
       
@@ -267,6 +262,21 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
      and In_Model(M, Get_Next'Result)
      and Neighbor_Blocks(B, Get_Next'Result);
 
+   procedure Equality_Preserves_Block_Relations
+     (Left_M, Right_M : Formal_Model;
+      B               : Block)
+     with Global => null,
+     Pre => Valid (Left_M) and then Left_M = Right_M
+     and then In_Model (Left_M, B),
+     Post => Valid (Right_M) and then
+     In_Model (Right_M, B) and then
+     Is_Last_Block (Left_M, B) = Is_Last_Block (Right_M, B) and then
+     Is_First_Block (Left_M, B) = Is_First_Block (Right_M, B) and then
+     (if not Is_Last_Block (Left_M, B) then
+          Get_Next (Left_M, B) = Get_Next (Right_M, B)) and then
+     (if not Is_First_Block (Left_M, B) then
+          Get_Prev (Left_M, B) = Get_Prev (Right_M, B));
+      
    function Initial_Block (Space : Address_Space)
                            return Block
      with Post =>
@@ -323,6 +333,9 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
            and then (if not Is_First_Block (M, B)
                                then Get_Prev (M, B) = Get_Prev (New_M, B_Left))
            and then (if not Is_Last_Block (M, B)
-                               then Get_Next (M, B) = Get_Next (New_M, B_Right));
+                               then Get_Next (M, B).Address = Get_Next (New_M, B_Right).Address
+                     and then Get_Next (M, B).Size = Get_Next (New_M, B_Right).Size
+                     and then Get_Next (New_M, B_Right).Prev_Block_Address = B_Right.Address
+                     and then In_Model (New_M, Get_Next (New_M, B_Right)));
    
 end TLSF.Proof.Model.Block;

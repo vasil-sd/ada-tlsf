@@ -484,6 +484,24 @@ package body TLSF.Proof.Model.Block with SPARK_Mode is
       null;
    end Equality_Preserves_Validity;
 
+   procedure Equality_Preserves_Block_Relations
+     (Left_M, Right_M : Formal_Model;
+      B               : Block)
+   is
+   begin
+      Equality_Preserves_Validity (Left_M, Right_M);
+      pragma Assert (Valid (Right_M));
+      pragma Assert (In_Model (Right_M, B));
+      pragma Assert (for all Idx in 1 .. Last (Right_M.Blocks) =>
+                       Get (Left_M.Blocks, Idx) = Get (Right_M.Blocks, Idx));
+      pragma Assert (Is_Last_Block (Left_M, B) = Is_Last_Block (Right_M, B));
+      pragma Assert (Is_First_Block (Left_M, B) = Is_First_Block (Right_M, B));
+      pragma Assert (if not Is_Last_Block (Left_M, B) then
+                        Get_Next (Left_M, B) = Get_Next (Right_M, B));
+      pragma Assert (if not Is_First_Block (Left_M, B) then
+                        Get_Prev (Left_M, B) = Get_Prev (Right_M, B));
+   end Equality_Preserves_Block_Relations; 
+   
    procedure Split_Block (M               : Formal_Model;
                           B               : Block;
                           L_Size, R_Size  : BT.Aligned_Size;
