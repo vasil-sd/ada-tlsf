@@ -259,7 +259,7 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
      and then not Is_Last_Block (M, B),
      Post =>
        Valid_Block(M.Mem_Region, Get_Next'Result)
-     and In_Model(M, Get_Next'Result)
+     and In_Model (M, Get_Next'Result)
      and Neighbor_Blocks(B, Get_Next'Result);
 
    procedure Equality_Preserves_Block_Relations
@@ -337,5 +337,34 @@ package TLSF.Proof.Model.Block with SPARK_Mode, Ghost is
                      and then Get_Next (M, B).Size = Get_Next (New_M, B_Right).Size
                      and then Get_Next (New_M, B_Right).Prev_Block_Address = B_Right.Address
                      and then In_Model (New_M, Get_Next (New_M, B_Right)));
-   
+
+   procedure Join (M           : Formal_Model;
+                   Left, Right : Block;
+                   B           : out Block;
+                   New_M       : out Formal_Model)
+     with Global => null,
+     Depends => (New_M => (M, Left, Right),
+                 B     => (Left, Right)),
+     Pre => 
+       Valid (M) and then
+     In_Model (M, Left) and then
+     In_Model (M, Right) and then
+     Neighbor_Blocks (Left, Right),
+     Post =>
+       Valid (New_M) and then
+     In_Model (New_M, B) and then
+     not In_Model (New_M, Left) and then
+     not In_Model (New_M, Right) and then
+     B.Size = Left.Size + Right.Size and then
+     B.Address = Left.Address and then
+     Is_First_Block (M, Left) = Is_First_Block (New_M, B) and then
+     Is_Last_Block (M, Right) = Is_Last_Block (New_M, B) and then
+     B.Prev_Block_Address = Left.Prev_Block_Address and then
+     (if not Is_First_Block (M, Left) then 
+          Get_Prev (M, Left) = Get_Prev (New_M, B)) and then
+     (if not Is_Last_Block (M, Right) then
+          Get_Next (M, Right).Address = Get_Next (New_M, B).Address
+      and then Get_Next (M, Right).Size = Get_Next (New_M, B).Size
+      and then Get_Next (New_M, B).Prev_Block_Address = B.Address);
+         
 end TLSF.Proof.Model.Block;
