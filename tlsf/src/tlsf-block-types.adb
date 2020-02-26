@@ -106,12 +106,22 @@ package body TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
    function "+" (A: Aligned_Address; S: Aligned_Size) return Aligned_Address
    is
       Addr : constant Natural := Natural(A) + Natural(S);
-      pragma Assert (Addr in 0.. Natural(Address'Last));
+      pragma Assert (Addr in 0 .. Natural (Address'Last));
       -- TODO add lemma:
       -- Aligned + Aligned = Aligned
       -- or more common case: preservation of aligment by +,-,* operations
       pragma Assume (Is_Aligned(Address(Addr)));
       Result : constant Aligned_Address := Address(Addr);
+   begin
+      return Result;
+   end "+";
+
+   function "+" (L, R : Aligned_Size) return Aligned_Size
+   is
+      Sz : constant Natural := Natural (L) + Natural (R);
+      pragma Assert (Sz in 0 .. Natural (Size'Last));
+      pragma Assume (Is_Aligned (Size (Sz)));
+      Result : constant Aligned_Size := Size (Sz);
    begin
       return Result;
    end "+";

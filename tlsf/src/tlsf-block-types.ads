@@ -81,6 +81,15 @@ package TLSF.Block.Types with SPARK_Mode, Pure, Preelaborate is
        Is_Aligned("+"'Result)
        and "+"'Result = Aligned_Address(Integer(A) + Integer(S));
 
+   function "+" (L, R : Aligned_Size) return Aligned_Size
+     with 
+       Global => null,
+       Pure_Function,
+       Pre => Integer(L) + Integer(R) in 0 .. Integer(Address'Last),
+     Post => 
+       Is_Aligned ("+"'Result)
+     and "+"'Result = Aligned_Size (Integer (L) + Integer (R));
+
    -- To is not inclusive, ie [From, To)
    function "-" (To, From : Aligned_Address) return Aligned_Size
      with
