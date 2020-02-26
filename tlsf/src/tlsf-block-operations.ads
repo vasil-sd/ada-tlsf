@@ -111,7 +111,7 @@ package TLSF.Block.Operations with SPARK_Mode is
      MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Next)) and then
      To_Model (Ctx, Next) = MB.Get_Next (MC.Get_Block_Model (Ctx), To_Model (Ctx, B)) and then
      Neighbor_Blocks (Ctx, B, Next);
-    
+   
    pragma Unevaluated_Use_Of_Old (Allow);
    
    procedure Split_Block (Ctx                   : TC.Context;
@@ -160,7 +160,7 @@ package TLSF.Block.Operations with SPARK_Mode is
      
      -- updated formal model is valid
      and then MB.Valid (MC.Get_Block_Model (Ctx))
-       
+     
      -- and output blocks are reflected into formal model
      and then MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Left))
      and then MB.In_Model (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right))
@@ -179,9 +179,14 @@ package TLSF.Block.Operations with SPARK_Mode is
      and then MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, B))'Old =
        MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right))
      and then Is_Last_Block (Ctx, Right) =
-       MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right));
-    
+       MB.Is_Last_Block (MC.Get_Block_Model (Ctx), To_Model (Ctx, Right))
    
+     -- neighborhood between right and next is kept
+     and then (if not Is_Last_Block (Ctx, Right) then
+                   MB.Neighbor_Blocks (To_Model (Ctx, Right),
+                                       MB.Get_Next (MC.Get_Block_Model (Ctx),
+                                                    To_Model (Ctx, Right))));
+    
 --     function Get_Prev_Free_Block (Ctx  : TC.Context;
 --                                   Addr : BT.Aligned_Address;
 --                                   Hdr  : BT.Block_Header_Free)
